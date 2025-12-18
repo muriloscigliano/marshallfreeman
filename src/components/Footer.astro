@@ -1,0 +1,214 @@
+---
+import { siteConfig } from '@data/site';
+
+const { name, footerNavigation, contact, cta } = siteConfig;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer" role="contentinfo">
+  <div class="footer__container container">
+    <div class="footer__grid">
+      <!-- Brand Column -->
+      <div class="footer__brand">
+        <a href="/" class="footer__logo" aria-label={`${name} - Home`}>
+          <img
+            src="/images/marshall-freeman-logo.svg"
+            alt={name}
+            class="footer__logo-img"
+            width="160"
+            height="36"
+          />
+        </a>
+        <p class="footer__tagline">
+          Professional debt recovery for Australian businesses.
+        </p>
+        <a href={cta.primary.href} class="footer__cta">
+          {cta.primary.label}
+        </a>
+      </div>
+
+      <!-- Contact Column -->
+      <address class="footer__contact-section">
+        <h2 class="footer__heading">Contact</h2>
+        <ul class="footer__list">
+          <li>
+            <a href={`mailto:${contact.email}`} class="footer__link">
+              {contact.email}
+            </a>
+          </li>
+          <li>
+            <a href={`tel:${contact.phone.replace(/\D/g, '')}`} class="footer__link">
+              {contact.phone}
+            </a>
+          </li>
+          <li class="footer__address">
+            {contact.address.city}, {contact.address.state}, {contact.address.country}
+          </li>
+        </ul>
+      </address>
+
+      <!-- Legal Column -->
+      <nav class="footer__legal" aria-label="Legal navigation">
+        <h2 class="footer__heading">Legal</h2>
+        <ul class="footer__list">
+          {footerNavigation.legal.map((item) => (
+            <li>
+              <a href={item.href} class="footer__link">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Quick Links Column -->
+      <div class="footer__quick">
+        <h2 class="footer__heading">Quick Links</h2>
+        <ul class="footer__list">
+          <li>
+            <a href={cta.login.href} class="footer__link">Client Login</a>
+          </li>
+          <li>
+            <a href="#how-it-works" class="footer__link">How It Works</a>
+          </li>
+          <li>
+            <a href="#faq" class="footer__link">FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">
+        &copy; {currentYear} {name}. All rights reserved.
+      </p>
+      <p class="footer__disclaimer">
+        Marshall Freeman is a registered debt collection agency operating under Australian law.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-3xl) var(--space-xl);
+    background: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 640px) {
+    .footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer__grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+  }
+
+  .footer__logo {
+    display: inline-block;
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer__logo-img {
+    height: 36px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  .footer__tagline {
+    color: inherit;
+    opacity: 0.7;
+    font-size: var(--text-sm);
+    max-width: 30ch;
+    margin-bottom: var(--space-lg);
+  }
+
+  .footer__cta {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-background);
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    transition: opacity var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .footer__cta:hover {
+    opacity: 0.9;
+  }
+
+  .footer__heading {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: inherit;
+    opacity: 0.5;
+    margin-bottom: var(--space-md);
+  }
+
+  .footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .footer__link {
+    font-size: var(--text-sm);
+    color: inherit;
+    opacity: 0.8;
+    transition: opacity var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .footer__link:hover {
+    opacity: 1;
+  }
+
+  .footer__contact-section {
+    font-style: normal;
+  }
+
+  .footer__address {
+    font-size: var(--text-sm);
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  .footer__bottom {
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer__copyright {
+    font-size: var(--text-xs);
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  .footer__disclaimer {
+    font-size: var(--text-xs);
+    color: inherit;
+    opacity: 0.4;
+  }
+</style>

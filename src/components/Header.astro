@@ -1,0 +1,286 @@
+---
+import { siteConfig } from '@data/site';
+
+const { navigation, name, cta } = siteConfig;
+---
+
+<header class="header" role="banner">
+  <nav class="header__nav container" aria-label="Main navigation">
+    <a href="/" class="header__logo" aria-label={`${name} - Home`}>
+      <img
+        src="/images/marshall-freeman-logo.svg"
+        alt={name}
+        class="header__logo-img"
+        width="180"
+        height="40"
+      />
+    </a>
+
+    <ul class="header__menu" role="menubar">
+      {navigation.map((item) => (
+        <li role="none">
+          <a href={item.href} class="header__link" role="menuitem">
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="header__actions">
+      <a href={cta.login.href} class="header__login">
+        {cta.login.label}
+      </a>
+      <a href={cta.primary.href} class="header__cta">
+        {cta.primary.label}
+      </a>
+    </div>
+
+    <button
+      class="header__menu-toggle"
+      type="button"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="header__menu-toggle-line"></span>
+      <span class="header__menu-toggle-line"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="header__mobile-menu" aria-hidden="true">
+    <ul class="header__mobile-menu-list">
+      {navigation.map((item) => (
+        <li>
+          <a href={item.href} class="header__mobile-link" data-mobile-link>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="header__mobile-actions">
+      <a href={cta.login.href} class="header__mobile-login">
+        {cta.login.label}
+      </a>
+      <a href={cta.primary.href} class="header__mobile-cta">
+        {cta.primary.label}
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-sticky);
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    height: clamp(60px, 10vw, 80px);
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .header__logo-img {
+    height: clamp(32px, 5vw, 40px);
+    width: auto;
+  }
+
+  .header__menu {
+    display: none;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 1024px) {
+    .header__menu {
+      display: flex;
+    }
+  }
+
+  .header__link {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .header__link:hover {
+    color: var(--color-text);
+  }
+
+  .header__actions {
+    display: none;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 1024px) {
+    .header__actions {
+      display: flex;
+    }
+
+    .header__menu-toggle {
+      display: none;
+    }
+  }
+
+  .header__login {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .header__login:hover {
+    color: var(--color-text);
+  }
+
+  .header__cta {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    transition:
+      background-color var(--duration-fast) var(--ease-out-expo),
+      transform var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .header__cta:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .header__menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--space-xs);
+  }
+
+  .header__menu-toggle-line {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-text);
+    transition: transform var(--duration-base) var(--ease-out-expo);
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-toggle-line:first-child {
+    transform: rotate(45deg) translate(3px, 3px);
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-toggle-line:last-child {
+    transform: rotate(-45deg) translate(3px, -3px);
+  }
+
+  .header__mobile-menu {
+    position: fixed;
+    top: clamp(60px, 10vw, 80px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-background);
+    padding: var(--space-xl) var(--container-padding);
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    transition:
+      opacity var(--duration-base) var(--ease-out-expo),
+      visibility var(--duration-base);
+  }
+
+  .header__mobile-menu[aria-hidden='false'] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header__mobile-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    flex: 1;
+  }
+
+  .header__mobile-link {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .header__mobile-link:hover {
+    color: var(--color-text);
+  }
+
+  .header__mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .header__mobile-login {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+  }
+
+  .header__mobile-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (min-width: 1024px) {
+    .header__mobile-menu {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.header__menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = document.querySelectorAll('[data-mobile-link]');
+
+  function closeMenu() {
+    toggle?.setAttribute('aria-expanded', 'false');
+    mobileMenu?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  toggle?.addEventListener('click', () => {
+    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isExpanded));
+    mobileMenu?.setAttribute('aria-hidden', String(isExpanded));
+    document.body.style.overflow = isExpanded ? '' : 'hidden';
+  });
+
+  // Close menu when clicking anchor links
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+</script>

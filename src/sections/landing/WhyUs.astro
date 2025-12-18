@@ -1,0 +1,106 @@
+---
+import { landingData } from '@data/landing';
+
+const { whyUs } = landingData;
+---
+
+<section id={whyUs.id} class="why-us" aria-labelledby="why-us-headline">
+  <div class="why-us__container container">
+    <div class="why-us__grid">
+      <header class="why-us__header">
+        <span class="why-us__tagline">{whyUs.tagline}</span>
+        <h2 id="why-us-headline" class="why-us__headline">
+          {whyUs.headline}
+        </h2>
+      </header>
+
+      <div class="why-us__content">
+        <ul class="why-us__benefits" role="list">
+          {whyUs.benefits.map((benefit) => (
+            <li class="why-us__benefit">
+              <span class="why-us__benefit-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <span class="why-us__benefit-text">{benefit}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="why-us__statement">{whyUs.statement}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-us {
+    padding-block: var(--space-4xl);
+    background: var(--color-foreground);
+  }
+
+  .why-us__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  @media (min-width: 1024px) {
+    .why-us__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+  }
+
+  .why-us__tagline {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .why-us__headline {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    max-width: 18ch;
+  }
+
+  .why-us__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .why-us__benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .why-us__benefit-icon {
+    flex-shrink: 0;
+    color: var(--color-accent);
+    margin-top: 2px;
+  }
+
+  .why-us__benefit-text {
+    font-size: var(--text-base);
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  .why-us__statement {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

@@ -1,0 +1,175 @@
+---
+import { landingData } from '@data/landing';
+
+const { hero, trustSignals } = landingData;
+---
+
+<section class="hero" aria-labelledby="hero-headline">
+  <div class="hero__container container">
+    <div class="hero__content">
+      <h1 id="hero-headline" class="hero__headline">
+        {hero.headline}
+      </h1>
+      <p class="hero__description">
+        {hero.description}
+      </p>
+      <div class="hero__cta-wrapper">
+        <a href={hero.cta.href} class="hero__cta">
+          {hero.cta.label}
+        </a>
+        <p class="hero__subtext">{hero.subtext}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust Signals -->
+  <div class="trust-signals">
+    <div class="trust-signals__container container">
+      <ul class="trust-signals__list" role="list">
+        {trustSignals.map((signal) => (
+          <li class="trust-signals__item">
+            <span class="trust-signals__icon" aria-hidden="true">
+              {signal.icon === 'shield' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+              )}
+              {signal.icon === 'users' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              )}
+              {signal.icon === 'check' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              )}
+              {signal.icon === 'dashboard' && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              )}
+            </span>
+            <span class="trust-signals__text">{signal.text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(120px, 20vw, 180px);
+    padding-bottom: 0;
+    background: var(--color-background);
+  }
+
+  .hero__container {
+    text-align: center;
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
+  .hero__content {
+    padding-bottom: var(--space-3xl);
+  }
+
+  .hero__headline {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--space-lg);
+    max-width: 20ch;
+    margin-inline: auto;
+  }
+
+  .hero__description {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 65ch;
+    margin-inline: auto;
+    margin-bottom: var(--space-xl);
+  }
+
+  .hero__cta-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md) var(--space-xl);
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    transition:
+      background-color var(--duration-fast) var(--ease-out-expo),
+      transform var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .hero__cta:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  .hero__subtext {
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  /* Trust Signals */
+  .trust-signals {
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: var(--color-foreground);
+    padding-block: var(--space-lg);
+  }
+
+  .trust-signals__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .trust-signals__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .trust-signals__list {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+    }
+  }
+
+  .trust-signals__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    justify-content: center;
+  }
+
+  @media (min-width: 1024px) {
+    .trust-signals__item {
+      justify-content: flex-start;
+    }
+  }
+
+  .trust-signals__icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+  }
+
+  .trust-signals__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .trust-signals__text {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+  }
+</style>

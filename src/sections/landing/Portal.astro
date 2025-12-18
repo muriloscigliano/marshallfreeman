@@ -1,0 +1,203 @@
+---
+import { landingData } from '@data/landing';
+
+const { portal } = landingData;
+---
+
+<section id={portal.id} class="portal" aria-labelledby="portal-headline">
+  <div class="portal__container container">
+    <div class="portal__grid">
+      <header class="portal__header">
+        <span class="portal__tagline">{portal.tagline}</span>
+        <h2 id="portal-headline" class="portal__headline">
+          {portal.headline}
+        </h2>
+        <p class="portal__description">{portal.description}</p>
+      </header>
+
+      <div class="portal__features-wrapper">
+        <ul class="portal__features" role="list">
+          {portal.features.map((feature) => (
+            <li class="portal__feature">
+              <span class="portal__feature-bullet" aria-hidden="true"></span>
+              <span class="portal__feature-text">{feature}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="portal__closing">{portal.closing}</p>
+      </div>
+    </div>
+
+    <!-- Portal Preview Placeholder -->
+    <div class="portal__preview" aria-hidden="true">
+      <div class="portal__preview-window">
+        <div class="portal__preview-header">
+          <span class="portal__preview-dot"></span>
+          <span class="portal__preview-dot"></span>
+          <span class="portal__preview-dot"></span>
+        </div>
+        <div class="portal__preview-content">
+          <div class="portal__preview-sidebar">
+            <div class="portal__preview-nav-item"></div>
+            <div class="portal__preview-nav-item"></div>
+            <div class="portal__preview-nav-item"></div>
+            <div class="portal__preview-nav-item"></div>
+          </div>
+          <div class="portal__preview-main">
+            <div class="portal__preview-card"></div>
+            <div class="portal__preview-card portal__preview-card--wide"></div>
+            <div class="portal__preview-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .portal {
+    padding-block: var(--space-4xl);
+    background: var(--color-background);
+  }
+
+  .portal__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-3xl);
+  }
+
+  @media (min-width: 1024px) {
+    .portal__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+  }
+
+  .portal__tagline {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .portal__headline {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-md);
+  }
+
+  .portal__description {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .portal__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+  }
+
+  .portal__feature {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .portal__feature-bullet {
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .portal__feature-text {
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  .portal__closing {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* Portal Preview (Placeholder UI) */
+  .portal__preview {
+    background: var(--color-foreground);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .portal__preview-window {
+    aspect-ratio: 16/10;
+  }
+
+  .portal__preview-header {
+    display: flex;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-border-subtle);
+  }
+
+  .portal__preview-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--color-text-subtle);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  .portal__preview-content {
+    display: flex;
+    height: calc(100% - 34px);
+  }
+
+  .portal__preview-sidebar {
+    width: 60px;
+    background: var(--color-background);
+    border-right: 1px solid var(--color-border-subtle);
+    padding: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .portal__preview-nav-item {
+    height: 8px;
+    background: var(--color-border);
+    border-radius: 2px;
+  }
+
+  .portal__preview-main {
+    flex: 1;
+    padding: var(--space-md);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+    align-content: start;
+  }
+
+  .portal__preview-card {
+    height: 60px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 4px;
+  }
+
+  .portal__preview-card--wide {
+    grid-column: span 2;
+    height: 80px;
+  }
+</style>
