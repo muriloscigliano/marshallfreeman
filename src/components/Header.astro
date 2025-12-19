@@ -1,112 +1,168 @@
 ---
 import { siteConfig } from '@data/site';
+import Button from '@components/Button.astro';
 
 const { navigation, name, cta } = siteConfig;
 ---
 
-<header class="header" role="banner">
+<header class="header" role="banner" data-scrolling-direction="up" data-scrolling-started="false">
   <nav class="header__nav container" aria-label="Main navigation">
-    <a href="/" class="header__logo" aria-label={`${name} - Home`}>
+    <a href="/" class="header__logo" aria-label={`${name} - Home`} data-header-reveal>
       <img
         src="/images/marshall-freeman-logo.svg"
         alt={name}
         class="header__logo-img"
-        width="180"
-        height="40"
       />
     </a>
 
-    <ul class="header__menu" role="menubar">
-      {navigation.map((item) => (
-        <li role="none">
-          <a href={item.href} class="header__link" role="menuitem">
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
+    <!-- Desktop Navigation -->
+    <div class="header__desktop">
+      <ul class="header__menu">
+        {navigation.map((item, index) => (
+          <li data-header-reveal data-header-delay={index}>
+            <a href={item.href} class="header__link">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
 
-    <div class="header__actions">
-      <a href={cta.login.href} class="header__login">
-        {cta.login.label}
-      </a>
-      <a href={cta.primary.href} class="header__cta">
-        {cta.primary.label}
-      </a>
+      <div class="header__actions">
+        <a href={cta.login.href} class="header__login" data-header-reveal data-header-delay="4">
+          {cta.login.label}
+        </a>
+        <div data-header-reveal data-header-delay="5">
+          <Button href={cta.primary.href} label={cta.primary.label} variant="secondary" size="small" />
+        </div>
+      </div>
     </div>
 
+    <!-- Mobile Menu Toggle -->
     <button
-      class="header__menu-toggle"
+      class="header__toggle"
       type="button"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
+      data-header-reveal
+      data-header-delay="1"
     >
-      <span class="header__menu-toggle-line"></span>
-      <span class="header__menu-toggle-line"></span>
+      <span class="header__toggle-line"></span>
+      <span class="header__toggle-line"></span>
     </button>
   </nav>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="header__mobile-menu" aria-hidden="true">
-    <ul class="header__mobile-menu-list">
-      {navigation.map((item) => (
-        <li>
-          <a href={item.href} class="header__mobile-link" data-mobile-link>
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-    <div class="header__mobile-actions">
-      <a href={cta.login.href} class="header__mobile-login">
-        {cta.login.label}
-      </a>
-      <a href={cta.primary.href} class="header__mobile-cta">
-        {cta.primary.label}
-      </a>
-    </div>
+  <div id="mobile-menu" class="header__mobile" aria-hidden="true">
+    <nav class="header__mobile-nav container">
+      <ul class="header__mobile-list">
+        {navigation.map((item) => (
+          <li>
+            <a href={item.href} class="header__mobile-link" data-mobile-link>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="header__mobile-footer">
+        <a href={cta.login.href} class="header__mobile-login" data-mobile-link>
+          {cta.login.label}
+        </a>
+        <div class="header__mobile-cta" data-mobile-link>
+          <Button href={cta.primary.href} label={cta.primary.label} variant="secondary" size="small" />
+        </div>
+      </div>
+    </nav>
   </div>
 </header>
 
 <style>
+  /* Hide header elements before reveal animation */
+  [data-header-reveal] {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
   .header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: var(--z-sticky);
+    transition:
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.3s ease;
+    transform: translateY(0) rotate(0.001deg);
+    background: transparent;
+  }
+
+  /* Add background when scrolling started */
+  :global([data-scrolling-started='true']) .header {
     background: var(--color-background);
-    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  /* Hide header when scrolling down (after scroll started) */
+  :global([data-scrolling-started='true'][data-scrolling-direction='down']) .header {
+    transform: translateY(-100%) rotate(0.001deg);
   }
 
   .header__nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-lg);
-    height: clamp(60px, 10vw, 80px);
+    height: 72px;
+    transition: height 0.3s ease;
+  }
+
+  /* Shrink nav when scrolling started */
+  :global([data-scrolling-started='true']) .header__nav {
+    height: 64px;
+  }
+
+  @media (min-width: 1024px) {
+    .header__nav {
+      height: 80px;
+    }
+
+    :global([data-scrolling-started='true']) .header__nav {
+      height: 72px;
+    }
   }
 
   .header__logo {
     display: flex;
     align-items: center;
+    z-index: 10;
   }
 
   .header__logo-img {
-    height: clamp(32px, 5vw, 40px);
+    height: 28px;
     width: auto;
   }
 
-  .header__menu {
+  @media (min-width: 1024px) {
+    .header__logo-img {
+      height: 32px;
+    }
+  }
+
+  /* Desktop Navigation */
+  .header__desktop {
     display: none;
-    gap: var(--space-lg);
+    align-items: center;
+    gap: var(--space-2xl);
   }
 
   @media (min-width: 1024px) {
-    .header__menu {
+    .header__desktop {
       display: flex;
     }
+  }
+
+  .header__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
   }
 
   .header__link {
@@ -120,24 +176,13 @@ const { navigation, name, cta } = siteConfig;
   }
 
   .header__actions {
-    display: none;
+    display: flex;
     align-items: center;
-    gap: var(--space-md);
-  }
-
-  @media (min-width: 1024px) {
-    .header__actions {
-      display: flex;
-    }
-
-    .header__menu-toggle {
-      display: none;
-    }
+    gap: var(--space-lg);
   }
 
   .header__login {
     font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
     color: var(--color-text-muted);
     transition: color var(--duration-fast) var(--ease-out-expo);
   }
@@ -146,123 +191,105 @@ const { navigation, name, cta } = siteConfig;
     color: var(--color-text);
   }
 
-  .header__cta {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-sm) var(--space-md);
-    background: var(--color-accent);
-    color: var(--color-background);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    transition:
-      background-color var(--duration-fast) var(--ease-out-expo),
-      transform var(--duration-fast) var(--ease-out-expo);
-  }
-
-  .header__cta:hover {
-    background: var(--color-accent-hover);
-  }
-
-  .header__menu-toggle {
+  /* Mobile Toggle */
+  .header__toggle {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 6px;
-    padding: var(--space-xs);
+    width: 32px;
+    height: 32px;
+    z-index: 10;
   }
 
-  .header__menu-toggle-line {
-    display: block;
+  @media (min-width: 1024px) {
+    .header__toggle {
+      display: none;
+    }
+  }
+
+  .header__toggle-line {
     width: 24px;
-    height: 2px;
+    height: 1.5px;
     background: var(--color-text);
     transition: transform var(--duration-base) var(--ease-out-expo);
   }
 
-  .header__menu-toggle[aria-expanded='true'] .header__menu-toggle-line:first-child {
-    transform: rotate(45deg) translate(3px, 3px);
+  .header__toggle[aria-expanded='true'] .header__toggle-line:first-child {
+    transform: rotate(45deg) translateY(5px);
   }
 
-  .header__menu-toggle[aria-expanded='true'] .header__menu-toggle-line:last-child {
-    transform: rotate(-45deg) translate(3px, -3px);
+  .header__toggle[aria-expanded='true'] .header__toggle-line:last-child {
+    transform: rotate(-45deg) translateY(-5px);
   }
 
-  .header__mobile-menu {
+  /* Mobile Menu */
+  .header__mobile {
     position: fixed;
-    top: clamp(60px, 10vw, 80px);
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: var(--color-background);
-    padding: var(--space-xl) var(--container-padding);
     opacity: 0;
     visibility: hidden;
-    display: flex;
-    flex-direction: column;
     transition:
       opacity var(--duration-base) var(--ease-out-expo),
       visibility var(--duration-base);
+    z-index: 5;
   }
 
-  .header__mobile-menu[aria-hidden='false'] {
+  .header__mobile[aria-hidden='false'] {
     opacity: 1;
     visibility: visible;
   }
 
-  .header__mobile-menu-list {
+  @media (min-width: 1024px) {
+    .header__mobile {
+      display: none;
+    }
+  }
+
+  .header__mobile-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding-top: 72px;
+  }
+
+  .header__mobile-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
-    flex: 1;
+    margin-bottom: auto;
+    padding-top: var(--space-2xl);
   }
 
   .header__mobile-link {
-    font-size: var(--text-2xl);
+    font-size: var(--text-4xl);
     font-weight: var(--font-weight-medium);
-    color: var(--color-text-muted);
-    transition: color var(--duration-fast) var(--ease-out-expo);
-  }
-
-  .header__mobile-link:hover {
     color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
   }
 
-  .header__mobile-actions {
+  .header__mobile-footer {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
-    padding-top: var(--space-xl);
-    border-top: 1px solid var(--color-border-subtle);
+    gap: var(--space-lg);
+    padding-bottom: var(--space-2xl);
   }
 
   .header__mobile-login {
     font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
     color: var(--color-text-muted);
-    text-align: center;
-    padding: var(--space-md);
-    border: 1px solid var(--color-border);
   }
 
   .header__mobile-cta {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-md);
-    background: var(--color-accent);
-    color: var(--color-background);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-  }
-
-  @media (min-width: 1024px) {
-    .header__mobile-menu {
-      display: none;
-    }
   }
 </style>
 
 <script>
-  const toggle = document.querySelector('.header__menu-toggle');
+  const toggle = document.querySelector('.header__toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileLinks = document.querySelectorAll('[data-mobile-link]');
 
@@ -279,7 +306,6 @@ const { navigation, name, cta } = siteConfig;
     document.body.style.overflow = isExpanded ? '' : 'hidden';
   });
 
-  // Close menu when clicking anchor links
   mobileLinks.forEach((link) => {
     link.addEventListener('click', closeMenu);
   });

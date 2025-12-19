@@ -1,66 +1,80 @@
 ---
 import { landingData } from '@data/landing';
+import Button from '@components/Button.astro';
 
 const { finalCta } = landingData;
 ---
 
 <section id={finalCta.id} class="final-cta" aria-labelledby="final-cta-headline">
   <div class="final-cta__container container">
-    <div class="final-cta__content">
-      <h2 id="final-cta-headline" class="final-cta__headline">
-        {finalCta.headline}
-      </h2>
-      <a href={finalCta.cta.href} class="final-cta__btn">
-        {finalCta.cta.label}
-      </a>
-      <p class="final-cta__subtext">{finalCta.subtext}</p>
+    <div class="final-cta__layout">
+      <header class="final-cta__content">
+        <h2 id="final-cta-headline" class="final-cta__headline">{finalCta.headline} <span class="final-cta__headline-muted">{finalCta.headlineMuted}</span></h2>
+        <p class="final-cta__subtext">{finalCta.subtext}</p>
+      </header>
+
+      <div class="final-cta__action">
+        <Button href={finalCta.cta.href} label={finalCta.cta.label} variant="secondary" />
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .final-cta {
-    padding-block: var(--space-4xl);
-    background: var(--color-accent);
-    color: var(--color-background);
+    padding-block: var(--space-section);
+    background: var(--color-yellow-700);
+  }
+
+  .final-cta__layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    align-items: flex-start;
+  }
+
+  @media (min-width: 1024px) {
+    .final-cta__layout {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3xl);
+    }
   }
 
   .final-cta__content {
-    text-align: center;
-    max-width: 600px;
-    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 1024px) {
+    .final-cta__content {
+      flex: 1.5;
+    }
   }
 
   .final-cta__headline {
     font-size: var(--text-4xl);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: -0.02em;
-    margin-bottom: var(--space-xl);
-    color: inherit;
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--color-text);
   }
 
-  .final-cta__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-md) var(--space-xl);
-    background: var(--color-background);
-    color: var(--color-accent);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--space-lg);
-    transition:
-      opacity var(--duration-fast) var(--ease-out-expo),
-      transform var(--duration-fast) var(--ease-out-expo);
-  }
-
-  .final-cta__btn:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
+  .final-cta__headline-muted {
+    color: var(--color-text-muted);
   }
 
   .final-cta__subtext {
-    font-size: var(--text-sm);
-    opacity: 0.8;
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 50ch;
+    line-height: 1.6;
+  }
+
+  .final-cta__action {
+    display: flex;
+    flex-shrink: 0;
   }
 </style>

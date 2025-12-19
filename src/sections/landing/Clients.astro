@@ -1,0 +1,160 @@
+---
+import { landingData } from '@data/landing';
+
+const { clients } = landingData;
+---
+
+<section class="clients" aria-labelledby="clients-headline">
+  <div class="clients__container container">
+    <header class="clients__header">
+      <h2 id="clients-headline" class="clients__headline">{clients.headline} <span class="clients__headline-muted">{clients.headlineMuted}</span></h2>
+      <p class="clients__tagline">{clients.tagline}</p>
+    </header>
+
+    <ul class="clients__grid" role="list" aria-label="Industries we serve">
+      {clients.items.map((client, index) => (
+        <li class={`clients__card ${index === 0 ? 'clients__card--featured' : ''}`}>
+          <article class="clients__card-content">
+            <h3 class="clients__industry">{client.industry}</h3>
+            <p class="clients__description">{client.description}</p>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .clients {
+    padding-block: var(--space-section);
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .clients__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+  }
+
+  .clients__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 1024px) {
+    .clients__header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-2xl);
+    }
+  }
+
+  .clients__headline {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.03em;
+    color: var(--color-background);
+  }
+
+  .clients__headline-muted {
+    color: rgba(254, 255, 243, 0.4);
+  }
+
+  .clients__tagline {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: rgba(254, 255, 243, 0.5);
+    max-width: none;
+  }
+
+  .clients__grid {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid rgba(254, 255, 243, 0.15);
+  }
+
+  .clients__card {
+    flex: 1 1 100%;
+    border: 1px solid rgba(254, 255, 243, 0.15);
+    margin: -1px;
+  }
+
+  @media (min-width: 480px) {
+    .clients__card {
+      flex: 1 1 50%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .clients__card {
+      flex: 1 1 25%;
+    }
+  }
+
+  .clients__card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    min-height: 160px;
+  }
+
+  @media (min-width: 768px) {
+    .clients__card-content {
+      padding: var(--space-xl);
+      gap: var(--space-md);
+      min-height: 200px;
+    }
+  }
+
+  .clients__card--featured {
+    background: var(--color-yellow-900);
+    color: var(--color-text);
+  }
+
+  .clients__card:not(.clients__card--featured) {
+    transition: background var(--duration-base) var(--ease-out-expo);
+  }
+
+  .clients__card:not(.clients__card--featured):hover {
+    background: rgba(254, 255, 243, 0.05);
+  }
+
+  .clients__industry {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .clients__card--featured .clients__industry {
+    color: var(--color-blue-900);
+  }
+
+  .clients__description {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: rgba(254, 255, 243, 0.6);
+    flex: 1;
+  }
+
+  .clients__card--featured .clients__description {
+    color: var(--color-blue-900);
+    opacity: 0.7;
+  }
+
+  .clients__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-blue-900);
+    transition: gap var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .clients__link:hover {
+    gap: var(--space-sm);
+  }
+</style>

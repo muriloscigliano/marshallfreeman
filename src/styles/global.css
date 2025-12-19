@@ -36,22 +36,22 @@ ol {
   list-style: none;
 }
 
-/* Balanced text wrapping for headings */
+/* Headings base styles */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  text-wrap: balance;
-  line-height: 1.1;
-  font-weight: var(--font-weight-bold);
+  line-height: 1.05;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.03em;
 }
 
 /* Sensible default for paragraphs */
 p {
   text-wrap: pretty;
-  max-width: 75ch;
+  max-width: 65ch;
 }
 
 /* Media defaults */
@@ -111,8 +111,8 @@ button {
 
 /* Selection styling */
 ::selection {
-  background-color: var(--color-accent);
-  color: var(--color-background);
+  background-color: var(--color-yellow-700);
+  color: var(--color-text);
 }
 
 /* ============================================
@@ -120,23 +120,23 @@ button {
    ============================================ */
 
 :root {
-  /* Typography Scale (Fluid) */
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
-  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
-  --text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
-  --text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3rem);
-  --text-5xl: clamp(3rem, 2rem + 5vw, 4.5rem);
-  --text-6xl: clamp(3.75rem, 2.5rem + 6.25vw, 6rem);
-  --text-display: clamp(4.5rem, 3rem + 7.5vw, 8rem);
+  /* Typography Scale (Fluid) - Fully responsive with clamp */
+  /* Formula: clamp(min, preferred, max) where preferred = min + (max - min) * ((100vw - 320px) / (1440 - 320)) */
+  --text-xs: clamp(0.6875rem, 0.65rem + 0.19vw, 0.8125rem);      /* 11px → 13px */
+  --text-sm: clamp(0.8125rem, 0.76rem + 0.26vw, 1rem);           /* 13px → 16px */
+  --text-base: clamp(0.9375rem, 0.87rem + 0.36vw, 1.1875rem);    /* 15px → 19px */
+  --text-lg: clamp(1.0625rem, 0.97rem + 0.45vw, 1.375rem);       /* 17px → 22px */
+  --text-xl: clamp(1.25rem, 1.11rem + 0.71vw, 1.75rem);          /* 20px → 28px */
+  --text-2xl: clamp(1.5rem, 1.29rem + 1.07vw, 2.25rem);          /* 24px → 36px */
+  --text-3xl: clamp(1.875rem, 1.52rem + 1.79vw, 3.125rem);       /* 30px → 50px */
+  --text-4xl: clamp(2.25rem, 1.68rem + 2.86vw, 4.25rem);         /* 36px → 68px */
+  --text-5xl: clamp(2.75rem, 1.86rem + 4.46vw, 5.875rem);        /* 44px → 94px */
+  --text-6xl: clamp(3.5rem, 2.14rem + 6.79vw, 8.25rem);          /* 56px → 132px */
+  --text-display: clamp(4rem, 2rem + 10vw, 11rem);               /* 64px → 176px */
 
-  /* Font Families */
-  --font-primary: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-secondary: Georgia, 'Times New Roman', serif;
-  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  /* Font Families - Inter for modern, clean look */
+  --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
 
   /* Font Weights */
   --font-weight-light: 300;
@@ -158,16 +158,17 @@ button {
   --color-yellow-700: #EFF48C;
   --color-yellow-900: #E2ED14;
 
-  /* Colors - Light Theme (Default) */
+  /* Colors - Light Theme */
   --color-background: #FEFFF3;
   --color-foreground: #F6F6F6;
   --color-text: #022B4B;
   --color-text-muted: #004B87;
-  --color-text-subtle: #1A82C3;
+  --color-text-subtle: rgba(2, 43, 75, 0.5);
   --color-accent: #02539C;
   --color-accent-hover: #004B87;
-  --color-border: #E9F9DF;
-  --color-border-subtle: #F6F6F6;
+  --color-highlight: #EFF48C;
+  --color-border: rgba(2, 43, 75, 0.1);
+  --color-border-subtle: rgba(2, 43, 75, 0.05);
 
   /* Spacing Scale */
   --space-xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.5rem);
@@ -178,11 +179,20 @@ button {
   --space-2xl: clamp(3rem, 2rem + 5vw, 6rem);
   --space-3xl: clamp(4rem, 3rem + 5vw, 8rem);
   --space-4xl: clamp(6rem, 4rem + 10vw, 12rem);
+  --space-section: clamp(8rem, 6rem + 10vw, 16rem);
 
   /* Layout */
   --container-max: 1440px;
-  --container-padding: clamp(1rem, 5vw, 4rem);
+  --container-padding: clamp(1.5rem, 5vw, 4rem);
   --grid-gap: var(--space-md);
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-sd: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
 
   /* Animation & Transitions */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -201,8 +211,6 @@ button {
   --z-modal: 400;
   --z-toast: 500;
 }
-
-/* Dark theme disabled - using brand colors only */
 
 /* ============================================
    UTILITY CLASSES
@@ -227,6 +235,18 @@ button {
   border: 0;
 }
 
+/* Underline link style */
+.link-underline {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out-expo);
+}
+
+.link-underline:hover {
+  text-decoration-color: transparent;
+}
+
 /* Lenis smooth scroll */
 html.lenis,
 html.lenis body {
@@ -247,4 +267,49 @@ html.lenis body {
 
 .lenis.lenis-smooth iframe {
   pointer-events: none;
+}
+
+/* ============================================
+   SPLIT TEXT ANIMATIONS
+   ============================================ */
+
+/*
+ * Hide elements before SplitText processes them to prevent FOUC
+ * GSAP will set autoAlpha: 1 when ready to animate
+ */
+.hero__headline,
+.hero__tagline,
+.hero__description,
+.hero__video,
+.hero__signal,
+[data-split] {
+  visibility: hidden;
+}
+
+/*
+ * Better font rendering for split text animations
+ */
+.line,
+.word,
+.char {
+  -webkit-text-rendering: optimizeSpeed;
+  text-rendering: optimizeSpeed;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  font-kerning: none;
+}
+
+/*
+ * The mask wrapper created by SplitText (overflow: clip is set inline)
+ */
+.line-mask {
+  display: block;
+}
+
+/*
+ * The actual line content that animates
+ */
+.line {
+  display: block;
+  will-change: transform;
 }

@@ -30,9 +30,12 @@ const props = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Inter Font - Modern, clean sans-serif -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
     <SEO {...props} />
   </head>
-  <body>
+  <body data-scrolling-started="false" data-scrolling-direction="up">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <Header />
@@ -44,7 +47,7 @@ const props = Astro.props;
     <Footer />
 
     <script>
-      // Initialize smooth scroll and animations
+      // Initialize smooth scroll, animations, and all GSAP functionality
       import('@scripts/smooth-scroll');
     </script>
   </body>

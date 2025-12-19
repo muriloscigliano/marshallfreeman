@@ -1,14 +1,114 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 
 // Register plugins
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 // Default animation settings
 const defaults = {
   duration: 1,
   ease: 'power3.out',
 };
+
+// Configuration for different split types
+const splitConfig = {
+  lines: { duration: 0.8, stagger: 0.08 },
+  words: { duration: 0.6, stagger: 0.06 },
+  chars: { duration: 0.4, stagger: 0.01 },
+};
+
+/**
+ * Animate split text with scroll trigger using GSAP SplitText
+ * Following official GSAP documentation pattern
+ */
+export function animateSplitLines(
+  element: HTMLElement,
+  options: {
+    duration?: number;
+    stagger?: number;
+    delay?: number;
+    start?: string;
+    ease?: string;
+    type?: 'lines' | 'words' | 'chars';
+    useScrollTrigger?: boolean;
+  } = {}
+) {
+  const {
+    duration,
+    stagger,
+    delay = 0,
+    start = 'top 80%',
+    ease = 'expo.out',
+    type = 'lines',
+    useScrollTrigger = true,
+  } = options;
+
+  // Use config defaults if not specified
+  const config = splitConfig[type];
+  const finalDuration = duration ?? config.duration;
+  const finalStagger = stagger ?? config.stagger;
+
+  // Determine which types to split - only split what we need
+  const typesToSplit =
+    type === 'lines' ? 'lines' :
+    type === 'words' ? 'lines,words' :
+    'lines,words,chars';
+
+  // Show element before animating (prevent FOUC)
+  gsap.set(element, { autoAlpha: 1 });
+
+  // Use SplitText.create following GSAP docs pattern
+  SplitText.create(element, {
+    type: typesToSplit,
+    mask: 'lines',
+    autoSplit: true,
+    linesClass: 'line',
+    wordsClass: 'word',
+    charsClass: 'char',
+    onSplit(instance: { lines: Element[]; words: Element[]; chars: Element[] }) {
+      // Get targets based on type
+      const targets = instance[type];
+
+      // Build animation config
+      const animConfig: gsap.TweenVars = {
+        yPercent: 110,
+        duration: finalDuration,
+        stagger: finalStagger,
+        delay,
+        ease,
+      };
+
+      // Add ScrollTrigger if enabled
+      if (useScrollTrigger) {
+        animConfig.scrollTrigger = {
+          trigger: element,
+          start: `clamp(${start})`,
+          once: true,
+        };
+      }
+
+      // Return the tween so it gets cleaned up on resize
+      return gsap.from(targets, animConfig);
+    },
+  });
+}
+
+/**
+ * Initialize split text animations for elements with data-split attribute
+ */
+export function initSplitTextAnimations() {
+  // Wait for fonts to load for accurate measurements
+  document.fonts.ready.then(() => {
+    document.querySelectorAll('[data-split]').forEach((el) => {
+      const element = el as HTMLElement;
+      const type = (element.dataset.splitReveal as 'lines' | 'words' | 'chars') || 'lines';
+      const start = element.dataset.splitStart || 'top 80%';
+
+      animateSplitLines(element, { type, start });
+    });
+  });
+}
 
 /**
  * Fade in animation with optional direction
@@ -181,5 +281,5 @@ export function scaleReveal(
   });
 }
 
-// Export GSAP for custom animations
-export { gsap, ScrollTrigger };
+// Export GSAP and SplitText for custom animations
+export { gsap, ScrollTrigger, SplitText };

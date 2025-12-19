@@ -1,195 +1,279 @@
 ---
 import { siteConfig } from '@data/site';
 
-const { name, footerNavigation, contact, cta } = siteConfig;
+const { name, footerNavigation, contactAU, contactNZ, cta, footer, navigation } = siteConfig;
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="footer" role="contentinfo">
-  <div class="footer__container container">
-    <div class="footer__grid">
-      <!-- Brand Column -->
-      <div class="footer__brand">
-        <a href="/" class="footer__logo" aria-label={`${name} - Home`}>
-          <img
-            src="/images/marshall-freeman-logo.svg"
-            alt={name}
-            class="footer__logo-img"
-            width="160"
-            height="36"
-          />
-        </a>
-        <p class="footer__tagline">
-          Professional debt recovery for Australian businesses.
-        </p>
-        <a href={cta.primary.href} class="footer__cta">
-          {cta.primary.label}
-        </a>
-      </div>
-
-      <!-- Contact Column -->
-      <address class="footer__contact-section">
-        <h2 class="footer__heading">Contact</h2>
-        <ul class="footer__list">
-          <li>
-            <a href={`mailto:${contact.email}`} class="footer__link">
-              {contact.email}
-            </a>
-          </li>
-          <li>
-            <a href={`tel:${contact.phone.replace(/\D/g, '')}`} class="footer__link">
-              {contact.phone}
-            </a>
-          </li>
-          <li class="footer__address">
-            {contact.address.city}, {contact.address.state}, {contact.address.country}
-          </li>
-        </ul>
-      </address>
-
-      <!-- Legal Column -->
-      <nav class="footer__legal" aria-label="Legal navigation">
-        <h2 class="footer__heading">Legal</h2>
-        <ul class="footer__list">
-          {footerNavigation.legal.map((item) => (
+<!-- Footer wrapper for parallax effect -->
+<div data-footer-parallax class="footer-wrap">
+  <footer data-footer-parallax-inner class="footer" role="contentinfo">
+    <div class="footer__container container">
+      <!-- Links Row -->
+      <div class="footer__links-row">
+        <!-- Pages Column -->
+        <nav class="footer__column" aria-label="Site navigation">
+          <span class="footer__heading">Pages</span>
+          <ul class="footer__list" role="list">
+            {navigation.map((item) => (
+              <li>
+                <a href={item.href} class="footer__link">
+                  <span class="footer__link-text">{item.label}</span>
+                </a>
+              </li>
+            ))}
             <li>
-              <a href={item.href} class="footer__link">{item.label}</a>
+              <a href={cta.login.href} class="footer__link">
+                <span class="footer__link-text">{cta.login.label}</span>
+              </a>
             </li>
-          ))}
-        </ul>
-      </nav>
+          </ul>
+        </nav>
 
-      <!-- Quick Links Column -->
-      <div class="footer__quick">
-        <h2 class="footer__heading">Quick Links</h2>
-        <ul class="footer__list">
-          <li>
-            <a href={cta.login.href} class="footer__link">Client Login</a>
-          </li>
-          <li>
-            <a href="#how-it-works" class="footer__link">How It Works</a>
-          </li>
-          <li>
-            <a href="#faq" class="footer__link">FAQ</a>
-          </li>
-        </ul>
+        <!-- Contact Column -->
+        <div class="footer__column">
+          <span class="footer__heading">Contact</span>
+          <ul class="footer__list" role="list">
+            <li>
+              <a href={`tel:${contactAU.phone.replace(/\s/g, '')}`} class="footer__link">
+                <span class="footer__link-text">{contactAU.phone}</span>
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${contactAU.email}`} class="footer__link">
+                <span class="footer__link-text">{contactAU.email}</span>
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${contactNZ.phone.replace(/\s/g, '')}`} class="footer__link">
+                <span class="footer__link-text">{contactNZ.phone} (NZ)</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Legal Column -->
+        <nav class="footer__column" aria-label="Legal navigation">
+          <span class="footer__heading">Legal</span>
+          <ul class="footer__list" role="list">
+            {footerNavigation.legal.map((item) => (
+              <li>
+                <a href={item.href} class="footer__link">
+                  <span class="footer__link-text">{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <!-- CTA Column -->
+        <div class="footer__column footer__column--cta">
+          <a href={cta.primary.href} class="footer__cta-link">
+            <span class="footer__link-text">{cta.primary.label}</span>
+            <span class="footer__cta-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Large Logo Row -->
+      <figure class="footer__logo-row" aria-hidden="true">
+        <img
+          src="/images/marshall-freeman-logo.svg"
+          alt=""
+          class="footer__logo"
+          role="presentation"
+        />
+      </figure>
+
+      <!-- Bottom Row -->
+      <div class="footer__bottom">
+        <p class="footer__copyright">© {currentYear} {name}</p>
+        <p class="footer__disclaimer">{footer.disclaimer}</p>
+        <p class="footer__tagline">{footer.tagline}</p>
       </div>
     </div>
-
-    <div class="footer__bottom">
-      <p class="footer__copyright">
-        &copy; {currentYear} {name}. All rights reserved.
-      </p>
-      <p class="footer__disclaimer">
-        Marshall Freeman is a registered debt collection agency operating under Australian law.
-      </p>
-    </div>
-  </div>
-</footer>
+  </footer>
+  <!-- Dark overlay for parallax fade effect -->
+  <div data-footer-parallax-dark class="footer__dark"></div>
+</div>
 
 <style>
-  .footer {
-    padding-block: var(--space-3xl) var(--space-xl);
-    background: var(--color-accent);
-    color: var(--color-background);
+  /* Footer wrapper for parallax */
+  .footer-wrap {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
   }
 
-  .footer__grid {
+  .footer {
+    position: relative;
+    background: var(--color-accent);
+    color: var(--color-background);
+    padding-block: var(--space-section) var(--space-2xl);
+  }
+
+  .footer__dark {
+    position: absolute;
+    inset: 0;
+    background: var(--color-accent);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .footer__container {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+  }
+
+  /* Links Row */
+  .footer__links-row {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-xl);
+    padding-bottom: var(--space-3xl);
+    border-bottom: 1px solid rgba(254, 255, 243, 0.15);
   }
 
-  @media (min-width: 640px) {
-    .footer__grid {
+  @media (min-width: 480px) {
+    .footer__links-row {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (min-width: 1024px) {
-    .footer__grid {
-      grid-template-columns: 2fr 1fr 1fr 1fr;
+  @media (min-width: 768px) {
+    .footer__links-row {
+      grid-template-columns: repeat(3, 1fr) auto;
+      gap: var(--space-2xl);
     }
   }
 
-  .footer__logo {
-    display: inline-block;
-    margin-bottom: var(--space-sm);
+  @media (min-width: 1024px) {
+    .footer__links-row {
+      grid-template-columns: repeat(3, 1fr) auto;
+      gap: var(--space-3xl);
+    }
   }
 
-  .footer__logo-img {
-    height: 36px;
-    width: auto;
-    filter: brightness(0) invert(1);
-  }
-
-  .footer__tagline {
-    color: inherit;
-    opacity: 0.7;
-    font-size: var(--text-sm);
-    max-width: 30ch;
-    margin-bottom: var(--space-lg);
-  }
-
-  .footer__cta {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-sm) var(--space-md);
-    background: var(--color-background);
-    color: var(--color-accent);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    transition: opacity var(--duration-fast) var(--ease-out-expo);
-  }
-
-  .footer__cta:hover {
-    opacity: 0.9;
-  }
-
-  .footer__heading {
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-semibold);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: inherit;
-    opacity: 0.5;
-    margin-bottom: var(--space-md);
-  }
-
-  .footer__list {
+  .footer__column {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
   }
 
+  .footer__column--cta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .footer__column--cta {
+      justify-content: flex-end;
+    }
+  }
+
+  .footer__heading {
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(254, 255, 243, 0.4);
+    margin-bottom: var(--space-xs);
+  }
+
+  .footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  /* Underline Link Animation */
   .footer__link {
+    position: relative;
+    display: inline-flex;
     font-size: var(--text-sm);
-    color: inherit;
+    color: var(--color-background);
     opacity: 0.8;
+    overflow: hidden;
     transition: opacity var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .footer__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: translateX(-101%);
+    transition: transform var(--duration-base) var(--ease-out-expo);
   }
 
   .footer__link:hover {
     opacity: 1;
   }
 
-  .footer__contact-section {
-    font-style: normal;
+  .footer__link:hover::after {
+    transform: translateX(0);
   }
 
-  .footer__address {
+  .footer__link-text {
+    display: inline-block;
+  }
+
+  /* CTA Link */
+  .footer__cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
     font-size: var(--text-sm);
-    color: inherit;
-    opacity: 0.6;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-background);
+    padding: var(--space-sm) var(--space-lg);
+    border: 1px solid rgba(254, 255, 243, 0.3);
+    transition:
+      background var(--duration-fast) var(--ease-out-expo),
+      border-color var(--duration-fast) var(--ease-out-expo);
   }
 
+  .footer__cta-link:hover {
+    background: rgba(254, 255, 243, 0.1);
+    border-color: rgba(254, 255, 243, 0.5);
+  }
+
+  .footer__cta-arrow {
+    transition: transform var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .footer__cta-link:hover .footer__cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Large Logo Row */
+  .footer__logo-row {
+    margin: 0;
+    padding-block: var(--space-xl);
+  }
+
+  .footer__logo {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
+  }
+
+  /* Bottom Row */
   .footer__bottom {
-    margin-top: var(--space-3xl);
-    padding-top: var(--space-lg);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
+    padding-top: var(--space-xl);
+    border-top: 1px solid rgba(254, 255, 243, 0.15);
   }
 
   @media (min-width: 768px) {
@@ -197,18 +281,28 @@ const currentYear = new Date().getFullYear();
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+      gap: var(--space-lg);
     }
   }
 
   .footer__copyright {
-    font-size: var(--text-xs);
-    color: inherit;
-    opacity: 0.6;
+    font-size: var(--text-sm);
+    opacity: 0.5;
   }
 
   .footer__disclaimer {
-    font-size: var(--text-xs);
-    color: inherit;
+    font-size: var(--text-sm);
     opacity: 0.4;
+  }
+
+  .footer__tagline {
+    font-size: var(--text-sm);
+    opacity: 0.4;
+  }
+
+  @media (min-width: 768px) {
+    .footer__tagline {
+      text-align: right;
+    }
   }
 </style>

@@ -38,15 +38,30 @@ export const siteConfig = {
     ],
   },
 
-  // Contact info
-  contact: {
-    email: 'hello@marshallfreeman.com.au',
-    phone: '1300 000 000',
-    address: {
-      city: 'Sydney',
-      state: 'NSW',
-      country: 'Australia',
+  // Contact info - Australia
+  contactAU: {
+    country: 'Australia',
+    company: 'Marshall Freeman Collections Pty Ltd',
+    phone: '1300 136 271',
+    email: 'info@marshallfreeman.com.au',
+  },
+
+  // Contact info - New Zealand
+  contactNZ: {
+    country: 'New Zealand',
+    company: 'Marshall Freeman Collections (NZ) Limited',
+    phone: '09 580 2444',
+    email: 'info@marshallfreeman.co.nz',
+  },
+
+  // Footer content
+  footer: {
+    tagline: 'Professional debt recovery for Australian and New Zealand businesses.',
+    headings: {
+      navigate: 'Navigate',
+      legal: 'Legal',
     },
+    disclaimer: 'Registered debt collection agency',
   },
 } as const;
 

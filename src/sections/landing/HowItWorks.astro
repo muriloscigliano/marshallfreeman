@@ -1,5 +1,6 @@
 ---
 import { landingData } from '@data/landing';
+import Button from '@components/Button.astro';
 
 const { howItWorks } = landingData;
 ---
@@ -7,106 +8,133 @@ const { howItWorks } = landingData;
 <section id={howItWorks.id} class="how-it-works" aria-labelledby="how-it-works-headline">
   <div class="how-it-works__container container">
     <header class="how-it-works__header">
-      <span class="how-it-works__tagline">{howItWorks.tagline}</span>
-      <h2 id="how-it-works-headline" class="how-it-works__headline">
-        {howItWorks.headline}
-      </h2>
+      <h2 id="how-it-works-headline" class="how-it-works__headline">{howItWorks.headline} <span class="how-it-works__headline-muted">{howItWorks.headlineMuted}</span></h2>
+      <p class="how-it-works__tagline">{howItWorks.tagline}</p>
     </header>
 
-    <ol class="how-it-works__steps" role="list">
+    <ol class="how-it-works__steps" role="list" aria-label="Recovery process steps">
       {howItWorks.steps.map((step) => (
         <li class="how-it-works__step">
-          <article class="how-it-works__card">
-            <span class="how-it-works__number" aria-hidden="true">
-              {step.number}
-            </span>
-            <h3 class="how-it-works__title">{step.title}</h3>
-            <p class="how-it-works__description">{step.description}</p>
+          <article class="how-it-works__step-content">
+            <h3 class="how-it-works__step-title">{step.title}</h3>
+            <p class="how-it-works__step-description">{step.description}</p>
           </article>
         </li>
       ))}
     </ol>
+
+    <footer class="how-it-works__footer">
+      <Button href={howItWorks.cta.href} label={howItWorks.cta.label} variant="secondary" />
+    </footer>
   </div>
 </section>
 
 <style>
   .how-it-works {
-    padding-block: var(--space-4xl);
-    background: var(--color-background);
+    padding-block: var(--space-section);
+    background: var(--color-foreground);
+  }
+
+  .how-it-works__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
   }
 
   .how-it-works__header {
-    text-align: center;
-    margin-bottom: var(--space-3xl);
-  }
-
-  .how-it-works__tagline {
-    display: block;
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-semibold);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-md);
-  }
-
-  .how-it-works__headline {
-    font-size: var(--text-4xl);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: -0.02em;
-    max-width: 25ch;
-    margin-inline: auto;
-  }
-
-  .how-it-works__steps {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-lg);
-    counter-reset: step;
-  }
-
-  @media (min-width: 640px) {
-    .how-it-works__steps {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 
   @media (min-width: 1024px) {
-    .how-it-works__steps {
-      grid-template-columns: repeat(4, 1fr);
+    .how-it-works__header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-2xl);
     }
   }
 
-  .how-it-works__card {
-    height: 100%;
-    padding: var(--space-xl);
-    background: var(--color-foreground);
-    border: 1px solid var(--color-border-subtle);
-    transition: border-color var(--duration-base) var(--ease-out-expo);
+  .how-it-works__headline {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
   }
 
-  .how-it-works__card:hover {
-    border-color: var(--color-border);
+  .how-it-works__headline-muted {
+    color: var(--color-text-muted);
   }
 
-  .how-it-works__number {
-    display: inline-block;
+  .how-it-works__tagline {
     font-size: var(--text-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-accent);
-    margin-bottom: var(--space-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    max-width: none;
   }
 
-  .how-it-works__title {
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--space-sm);
-    line-height: 1.3;
+  /* Steps */
+  .how-it-works__steps {
+    display: flex;
+    flex-direction: column;
   }
 
-  .how-it-works__description {
-    font-size: var(--text-sm);
+  .how-it-works__step {
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-xl);
+  }
+
+  .how-it-works__step:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .how-it-works__step-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .how-it-works__step-content {
+      flex-direction: row;
+      gap: var(--space-3xl);
+      justify-content: space-between;
+    }
+  }
+
+  .how-it-works__step-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text);
+    flex-shrink: 0;
+    transition: color var(--duration-base) var(--ease-out-expo);
+  }
+
+  @media (min-width: 768px) {
+    .how-it-works__step-title {
+      min-width: 280px;
+    }
+  }
+
+  .how-it-works__step:nth-child(n+2) .how-it-works__step-title {
+    color: var(--color-text-subtle);
+  }
+
+  .how-it-works__step:hover .how-it-works__step-title {
+    color: var(--color-text);
+  }
+
+  .how-it-works__step-description {
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.6;
+    max-width: 50ch;
+    text-align: right;
+  }
+
+  .how-it-works__footer {
+    display: flex;
   }
 </style>

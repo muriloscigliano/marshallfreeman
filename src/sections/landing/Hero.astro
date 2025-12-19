@@ -6,43 +6,36 @@ const { hero, trustSignals } = landingData;
 
 <section class="hero" aria-labelledby="hero-headline">
   <div class="hero__container container">
-    <div class="hero__content">
-      <h1 id="hero-headline" class="hero__headline">
-        {hero.headline}
-      </h1>
-      <p class="hero__description">
-        {hero.description}
-      </p>
-      <div class="hero__cta-wrapper">
-        <a href={hero.cta.href} class="hero__cta">
-          {hero.cta.label}
-        </a>
-        <p class="hero__subtext">{hero.subtext}</p>
+    <header class="hero__header">
+      <div class="hero__content">
+        <h1 id="hero-headline" class="hero__headline" set:html={hero.headline.replace("'", "'")} />
+        <p class="hero__tagline">{hero.tagline}</p>
+      </div>
+
+      <aside class="hero__aside">
+        <p class="hero__description">{hero.description}</p>
+      </aside>
+    </header>
+
+    <!-- Video container - placeholder for future video -->
+    <div class="hero__video" aria-label="Product demo video">
+      <div class="hero__video-placeholder">
+        <span class="hero__video-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </span>
       </div>
     </div>
-  </div>
 
-  <!-- Trust Signals -->
-  <div class="trust-signals">
-    <div class="trust-signals__container container">
-      <ul class="trust-signals__list" role="list">
-        {trustSignals.map((signal) => (
-          <li class="trust-signals__item">
-            <span class="trust-signals__icon" aria-hidden="true">
-              {signal.icon === 'shield' && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
-              )}
-              {signal.icon === 'users' && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              )}
-              {signal.icon === 'check' && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              )}
-              {signal.icon === 'dashboard' && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-              )}
+    <div class="hero__signals-wrap">
+      <ul class="hero__signals" role="list" aria-label="Key benefits">
+        {trustSignals.map((signal, index) => (
+          <li class="hero__signal">
+            <span class="hero__signal-number" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
             </span>
-            <span class="trust-signals__text">{signal.text}</span>
+            <span class="hero__signal-text">{signal.text}</span>
           </li>
         ))}
       </ul>
@@ -52,124 +45,229 @@ const { hero, trustSignals } = landingData;
 
 <style>
   .hero {
-    padding-top: clamp(120px, 20vw, 180px);
-    padding-bottom: 0;
-    background: var(--color-background);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-block: clamp(120px, 20vw, 160px) var(--space-2xl);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle gradient accent */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(239, 244, 140, 0.08) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
   }
 
   .hero__container {
-    text-align: center;
-    max-width: 900px;
-    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  @media (min-width: 1024px) {
+    .hero__header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-3xl);
+    }
   }
 
   .hero__content {
-    padding-bottom: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    flex: 1.5;
+    max-width: 660px;
+    justify-content: flex-end;
   }
 
   .hero__headline {
-    font-size: var(--text-5xl);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: -0.02em;
+    font-size: clamp(36px, 8vw, 110px);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.04em;
     line-height: 1.1;
-    margin-bottom: var(--space-lg);
-    max-width: 20ch;
-    margin-inline: auto;
+  }
+
+  /* Highlight styling for headline */
+  .hero__headline :global(em),
+  .hero__headline :global(strong) {
+    font-style: normal;
+    font-weight: inherit;
+    color: var(--color-accent);
+  }
+
+  .hero__tagline {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+    max-width: none;
+  }
+
+  .hero__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    flex: 1;
+    max-width: 530px;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__aside {
+      padding-bottom: var(--space-sm);
+    }
   }
 
   .hero__description {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.7;
-    max-width: 65ch;
-    margin-inline: auto;
-    margin-bottom: var(--space-xl);
   }
 
-  .hero__cta-wrapper {
+  /* Video Container - breaks out of container */
+  .hero__video {
+    width: calc(100% + var(--container-padding) * 2);
+    max-width: min(1500px, 100vw - var(--space-lg) * 2);
+    margin-inline: calc(var(--container-padding) * -1);
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media (min-width: 1440px) {
+    .hero__video {
+      width: 1500px;
+      margin-inline: auto;
+      margin-left: calc((100% - 1500px) / 2);
+    }
+  }
+
+  .hero__video-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--color-blue-900);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-md);
-  }
-
-  .hero__cta {
-    display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-md) var(--space-xl);
-    background: var(--color-accent);
-    color: var(--color-background);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-semibold);
-    transition:
-      background-color var(--duration-fast) var(--ease-out-expo),
-      transform var(--duration-fast) var(--ease-out-expo);
+    cursor: pointer;
+    transition: background var(--duration-base) var(--ease-out-expo);
   }
 
-  .hero__cta:hover {
-    background: var(--color-accent-hover);
-    transform: translateY(-2px);
+  .hero__video-placeholder:hover {
+    background: color-mix(in srgb, var(--color-blue-900) 90%, white);
   }
 
-  .hero__subtext {
-    font-size: var(--text-sm);
-    color: var(--color-text-subtle);
+  .hero__video-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--color-yellow-900);
+    color: var(--color-blue-900);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--duration-base) var(--ease-out-expo);
   }
 
-  /* Trust Signals */
-  .trust-signals {
-    border-top: 1px solid var(--color-border-subtle);
-    border-bottom: 1px solid var(--color-border-subtle);
-    background: var(--color-foreground);
-    padding-block: var(--space-lg);
+  .hero__video-placeholder:hover .hero__video-icon {
+    transform: scale(1.1);
   }
 
-  .trust-signals__list {
+  @media (min-width: 768px) {
+    .hero__video-icon {
+      width: 100px;
+      height: 100px;
+    }
+
+    .hero__video-icon svg {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  /* Signals wrap - breaks out of container to match video */
+  .hero__signals-wrap {
+    width: calc(100% + var(--container-padding) * 2);
+    max-width: min(1500px, 100vw - var(--space-lg) * 2);
+    margin-inline: calc(var(--container-padding) * -1);
+  }
+
+  @media (min-width: 1440px) {
+    .hero__signals-wrap {
+      width: 1380px;
+    }
+  }
+
+  .hero__signals {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-md);
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
   }
 
   @media (min-width: 640px) {
-    .trust-signals__list {
+    .hero__signals {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media (min-width: 1024px) {
-    .trust-signals__list {
+    .hero__signals {
       grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-lg);
     }
   }
 
-  .trust-signals__item {
+  .hero__signal {
     display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    justify-content: center;
+    flex-direction: column;
+    height: 220px;
+    gap: var(--space-xs);
+    padding: var(--space-lg);
+    background: var(--color-background);
+    transition: background var(--duration-base) var(--ease-out-expo);
+    justify-content: space-around;
   }
 
-  @media (min-width: 1024px) {
-    .trust-signals__item {
-      justify-content: flex-start;
-    }
+  .hero__signal:hover {
+    background: var(--color-foreground);
   }
 
-  .trust-signals__icon {
-    flex-shrink: 0;
-    color: var(--color-text-muted);
+  .hero__signal-number {
+    font-size: 16px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent);
   }
 
-  .trust-signals__icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .trust-signals__text {
+  .hero__signal-text {
     font-size: var(--text-sm);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
+    line-height: 1.4;
   }
 </style>

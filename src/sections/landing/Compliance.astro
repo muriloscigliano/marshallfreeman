@@ -1,0 +1,191 @@
+---
+import { landingData } from '@data/landing';
+import Button from '@components/Button.astro';
+
+const { compliance } = landingData;
+
+const badgeIcons: Record<string, string> = {
+  ACCC: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
+  ASIC: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  Privacy: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  ACDBA: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+};
+---
+
+<section class="compliance" aria-labelledby="compliance-headline">
+  <div class="compliance__container container">
+    <div class="compliance__layout">
+      <div class="compliance__content">
+        <header class="compliance__header">
+          <p class="compliance__tagline">{compliance.tagline}</p>
+          <h2 id="compliance-headline" class="compliance__headline">{compliance.headline} <span class="compliance__headline-muted">{compliance.headlineMuted}</span></h2>
+        </header>
+
+        <ul class="compliance__list" role="list" aria-label="Compliance features">
+          {compliance.items.map((item) => (
+            <li class="compliance__item">
+              <span class="compliance__icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </span>
+              <span class="compliance__text">{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <Button href={compliance.cta.href} label={compliance.cta.label} variant="primary" />
+      </div>
+
+      <aside class="compliance__badges" aria-label="Compliance certifications">
+        <ul class="compliance__badges-grid" role="list">
+          {compliance.badges.map((badge) => (
+            <li class="compliance__badge">
+              <div class="compliance__badge-icon" aria-hidden="true" set:html={badgeIcons[badge.name]} />
+              <span class="compliance__badge-label">{badge.label}</span>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .compliance {
+    padding-block: var(--space-section);
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .compliance__container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .compliance__layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+  }
+
+  @media (min-width: 1024px) {
+    .compliance__layout {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
+  .compliance__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 1024px) {
+    .compliance__content {
+      flex: 1;
+    }
+  }
+
+  .compliance__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .compliance__tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(254, 255, 243, 0.5);
+  }
+
+  .compliance__tagline::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(254,255,243,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .compliance__headline {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--color-background);
+  }
+
+  .compliance__headline-muted {
+    color: rgba(254, 255, 243, 0.4);
+  }
+
+  .compliance__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .compliance__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--text-sm);
+    color: rgba(254, 255, 243, 0.8);
+  }
+
+  .compliance__icon {
+    flex-shrink: 0;
+    color: rgba(254, 255, 243, 0.5);
+  }
+
+  /* Badges */
+  .compliance__badges {
+    background: rgba(254, 255, 243, 0.03);
+    border: 1px solid rgba(254, 255, 243, 0.1);
+    display: flex;
+  }
+
+  @media (min-width: 1024px) {
+    .compliance__badges {
+      flex: 1;
+    }
+  }
+
+  .compliance__badges-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 1fr;
+    flex: 1;
+  }
+
+  .compliance__badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+    border: 1px solid rgba(254, 255, 243, 0.1);
+    margin: -1px;
+  }
+
+  .compliance__badge-icon {
+    color: rgba(254, 255, 243, 0.3);
+  }
+
+  .compliance__badge-label {
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    color: rgba(254, 255, 243, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+</style>
