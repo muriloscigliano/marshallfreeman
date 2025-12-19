@@ -1,0 +1,12 @@
+# robots.txt for Marshall Freeman
+# https://marshallfreeman.com.au
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://marshallfreeman.com.au/sitemap-index.xml
+
+# Disallow admin/login areas
+Disallow: /login
+Disallow: /admin

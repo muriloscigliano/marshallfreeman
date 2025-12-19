@@ -6,10 +6,16 @@ interface Props {
   size?: 'default' | 'small';
   ariaLabel?: string;
   type?: 'link' | 'submit';
+  openDrawer?: string;
 }
 
-const { href, label, variant = 'primary', size = 'default', ariaLabel, type = 'link' } = Astro.props;
+const { href, label, variant = 'primary', size = 'default', ariaLabel, type = 'link', openDrawer } = Astro.props;
 const sizeClass = size === 'small' ? 'btn-animate--small' : '';
+
+// Check if href points to #contact - make it open drawer instead
+const isContactLink = href === '#contact';
+const shouldOpenDrawer = openDrawer || isContactLink;
+const drawerTarget = openDrawer || (isContactLink ? 'contact' : undefined);
 ---
 
 {type === 'submit' ? (
@@ -17,6 +23,21 @@ const sizeClass = size === 'small' ? 'btn-animate--small' : '';
     type="submit"
     aria-label={ariaLabel || label}
     class={`btn-animate btn-animate--${variant} ${sizeClass}`}
+  >
+    <span class="btn-animate__bg"></span>
+    <span data-button-animate-chars class="btn-animate__text">{label}</span>
+    <span class="btn-animate__arrow" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </span>
+  </button>
+) : shouldOpenDrawer ? (
+  <button
+    type="button"
+    aria-label={ariaLabel || label}
+    class={`btn-animate btn-animate--${variant} ${sizeClass}`}
+    data-drawer-open={drawerTarget}
   >
     <span class="btn-animate__bg"></span>
     <span data-button-animate-chars class="btn-animate__text">{label}</span>

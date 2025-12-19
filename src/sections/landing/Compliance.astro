@@ -34,7 +34,9 @@ const badgeIcons: Record<string, string> = {
           ))}
         </ul>
 
-        <Button href={compliance.cta.href} label={compliance.cta.label} variant="primary" />
+        <div class="compliance__actions">
+          <Button href={compliance.cta.href} label={compliance.cta.label} variant="primary" />
+        </div>
       </div>
 
       <aside class="compliance__badges" aria-label="Compliance certifications">
@@ -143,6 +145,14 @@ const badgeIcons: Record<string, string> = {
   .compliance__icon {
     flex-shrink: 0;
     color: rgba(254, 255, 243, 0.5);
+  }
+
+  /* Actions */
+  .compliance__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
   }
 
   /* Badges */

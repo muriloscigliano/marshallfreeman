@@ -171,8 +171,8 @@ export const landingData = {
       'Audited & certified',
     ],
     cta: {
-      label: 'Learn more',
-      href: '#approach',
+      label: 'Submit a complaint',
+      href: '/complaints',
     },
     badges: [
       { name: 'ACCC', label: 'ACCC Compliant' },

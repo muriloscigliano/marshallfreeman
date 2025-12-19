@@ -2,6 +2,8 @@
 import SEO from '@components/SEO.astro';
 import Header from '@components/Header.astro';
 import Footer from '@components/Footer.astro';
+import ContactDrawer from '@components/ContactDrawer.astro';
+import IntroOverlay from '@components/IntroOverlay.astro';
 import '@styles/global.css';
 
 interface Props {
@@ -30,12 +32,23 @@ const props = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Preload critical font (Inter Medium - most used weight) -->
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYAZ9hiJ-Ek-_EeA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
     <!-- Inter Font - Modern, clean sans-serif -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <SEO {...props} />
   </head>
   <body data-scrolling-started="false" data-scrolling-direction="up">
+    <IntroOverlay />
+
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <Header />
@@ -45,6 +58,8 @@ const props = Astro.props;
     </main>
 
     <Footer />
+
+    <ContactDrawer />
 
     <script>
       // Initialize smooth scroll, animations, and all GSAP functionality

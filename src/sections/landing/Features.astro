@@ -22,12 +22,21 @@ const icons: Record<string, string> = {
 
     <ul class="features__grid" role="list" aria-label="Platform features">
       {platformFeatures.items.map((item) => (
-        <li class="features__card">
+        <li class="features__card" data-direction-aware>
+          <!-- Default content (dark text) -->
           <article class="features__card-content">
             <div class="features__icon" aria-hidden="true" set:html={icons[item.icon]} />
             <h3 class="features__title">{item.title}</h3>
             <p class="features__description">{item.description}</p>
           </article>
+          <!-- Hover content (light text) - clipped with highlight -->
+          <div class="features__card-highlight" aria-hidden="true">
+            <article class="features__card-content features__card-content--hover">
+              <div class="features__icon" set:html={icons[item.icon]} />
+              <h3 class="features__title">{item.title}</h3>
+              <p class="features__description">{item.description}</p>
+            </article>
+          </div>
         </li>
       ))}
     </ul>
@@ -89,21 +98,55 @@ const icons: Record<string, string> = {
   }
 
   .features__card {
+    position: relative;
     border: 1px solid var(--color-border);
     margin: -1px;
-    transition: background var(--duration-base) var(--ease-out-expo);
+    overflow: hidden;
   }
 
-  .features__card:hover {
-    background: var(--color-foreground);
+  /* Direction-aware highlight */
+  .features__card-highlight {
+    position: absolute;
+    inset: 8px;
+    border-radius: 6px;
+    background: var(--color-accent);
+    pointer-events: none;
+    z-index: 2;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  @media (max-width: 639px) {
+    .features__card-highlight {
+      display: none;
+    }
   }
 
   .features__card-content {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
     padding: var(--space-xl);
     min-height: 200px;
+  }
+
+  /* Hover content inside highlight - offset to align with original */
+  .features__card-content--hover {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    z-index: 3;
+  }
+
+  .features__card-content--hover .features__icon,
+  .features__card-content--hover .features__title,
+  .features__card-content--hover .features__description {
+    color: var(--color-background);
   }
 
   @media (min-width: 768px) {
@@ -140,3 +183,79 @@ const icons: Record<string, string> = {
     flex: 1;
   }
 </style>
+
+<script>
+  function initDirectionAwareHover() {
+    const cards = document.querySelectorAll('.features__card[data-direction-aware]');
+
+    cards.forEach((card) => {
+      const highlight = card.querySelector('.features__card-highlight') as HTMLElement;
+      if (!highlight) return;
+
+      // Get direction based on which edge the mouse crossed
+      const getDirection = (e: MouseEvent, rect: DOMRect): string => {
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Calculate distances to each edge
+        const distTop = y;
+        const distBottom = rect.height - y;
+        const distLeft = x;
+        const distRight = rect.width - x;
+
+        const minDist = Math.min(distTop, distBottom, distLeft, distRight);
+
+        if (minDist === distTop) return 'top';
+        if (minDist === distBottom) return 'bottom';
+        if (minDist === distLeft) return 'left';
+        return 'right';
+      };
+
+      // clip-path: inset(top right bottom left)
+      // Get clip-path for hidden state based on direction (reveals from that edge)
+      const getHiddenClipPath = (direction: string): string => {
+        switch (direction) {
+          case 'top': return 'inset(0 0 100% 0)';    // clipped at bottom, reveals from top
+          case 'bottom': return 'inset(100% 0 0 0)'; // clipped at top, reveals from bottom
+          case 'left': return 'inset(0 100% 0 0)';   // clipped at right, reveals from left
+          case 'right': return 'inset(0 0 0 100%)';  // clipped at left, reveals from right
+          default: return 'inset(0 100% 0 0)';
+        }
+      };
+
+      card.addEventListener('mouseenter', (e) => {
+        const rect = card.getBoundingClientRect();
+        const direction = getDirection(e as MouseEvent, rect);
+
+        // Set starting clip-path instantly (hidden)
+        highlight.style.transition = 'none';
+        highlight.style.clipPath = getHiddenClipPath(direction);
+
+        // Force reflow
+        highlight.offsetHeight;
+
+        // Animate to fully visible
+        highlight.style.transition = 'clip-path 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+        highlight.style.clipPath = 'inset(0 0 0 0)';
+      });
+
+      card.addEventListener('mouseleave', (e) => {
+        const rect = card.getBoundingClientRect();
+        const direction = getDirection(e as MouseEvent, rect);
+
+        // Animate out in the exit direction
+        highlight.style.transition = 'clip-path 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+        highlight.style.clipPath = getHiddenClipPath(direction);
+      });
+    });
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDirectionAwareHover);
+  } else {
+    initDirectionAwareHover();
+  }
+
+  document.addEventListener('astro:page-load', initDirectionAwareHover);
+</script>

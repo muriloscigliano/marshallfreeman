@@ -1,0 +1,107 @@
+---
+// Single overlay for both intro and page transitions
+// Blocks start covering, then reveal
+---
+
+<div class="page-overlay" data-page-overlay>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+  <div class="block"></div>
+</div>
+
+<style is:global>
+  .page-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100svh;
+    display: flex;
+    flex-direction: row;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .page-overlay .block {
+    flex: 1;
+    height: 100%;
+    background: var(--color-accent);
+    transform: scaleX(1);
+    transform-origin: right;
+    will-change: transform;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  (function init() {
+    const overlay = document.querySelector('[data-page-overlay]') as HTMLElement;
+    if (!overlay) return;
+
+    const blocks = overlay.querySelectorAll('.block');
+    let isTransitioning = false;
+
+    // Reveal page - blocks shrink from right
+    gsap.to(blocks, {
+      scaleX: 0,
+      duration: 0.5,
+      stagger: 0.025,
+      ease: 'power3.inOut',
+      delay: 0.1,
+      onComplete: () => {
+        overlay.style.pointerEvents = 'none';
+        window.dispatchEvent(new CustomEvent('introComplete'));
+      }
+    });
+
+    // Handle navigation clicks
+    document.addEventListener('click', (e) => {
+      if (isTransitioning) {
+        e.preventDefault();
+        return;
+      }
+
+      const link = (e.target as HTMLElement).closest('a[href^="/"]') as HTMLAnchorElement;
+      if (!link) return;
+
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || link.target === '_blank') return;
+
+      const url = new URL(link.href).pathname;
+      if (url === window.location.pathname) return;
+
+      e.preventDefault();
+      isTransitioning = true;
+      overlay.style.pointerEvents = 'auto';
+
+      // Cover page then navigate
+      gsap.set(blocks, { transformOrigin: 'left' });
+      gsap.to(blocks, {
+        scaleX: 1,
+        duration: 0.5,
+        stagger: 0.025,
+        ease: 'power3.inOut',
+        onComplete: () => {
+          window.location.href = url;
+        }
+      });
+    });
+  })();
+</script>

@@ -66,24 +66,17 @@ const currentYear = new Date().getFullYear();
           </ul>
         </nav>
 
-        <!-- CTA Column -->
-        <div class="footer__column footer__column--cta">
-          <a href={cta.primary.href} class="footer__cta-link">
-            <span class="footer__link-text">{cta.primary.label}</span>
-            <span class="footer__cta-arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
       </div>
 
-      <!-- Large Logo Row -->
-      <figure class="footer__logo-row" aria-hidden="true">
+      <!-- Large Logo -->
+      <div class="footer__logo-row" aria-hidden="true">
         <img
           src="/images/marshall-freeman-logo.svg"
           alt=""
           class="footer__logo"
-          role="presentation"
+          loading="lazy"
         />
-      </figure>
+      </div>
 
       <!-- Bottom Row -->
       <div class="footer__bottom">
@@ -163,18 +156,6 @@ const currentYear = new Date().getFullYear();
     gap: var(--space-sm);
   }
 
-  .footer__column--cta {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-
-  @media (min-width: 768px) {
-    .footer__column--cta {
-      justify-content: flex-end;
-    }
-  }
-
   .footer__heading {
     font-size: var(--text-xs);
     font-weight: var(--font-weight-medium);
@@ -225,46 +206,18 @@ const currentYear = new Date().getFullYear();
     display: inline-block;
   }
 
-  /* CTA Link */
-  .footer__cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-background);
-    padding: var(--space-sm) var(--space-lg);
-    border: 1px solid rgba(254, 255, 243, 0.3);
-    transition:
-      background var(--duration-fast) var(--ease-out-expo),
-      border-color var(--duration-fast) var(--ease-out-expo);
-  }
-
-  .footer__cta-link:hover {
-    background: rgba(254, 255, 243, 0.1);
-    border-color: rgba(254, 255, 243, 0.5);
-  }
-
-  .footer__cta-arrow {
-    transition: transform var(--duration-fast) var(--ease-out-expo);
-  }
-
-  .footer__cta-link:hover .footer__cta-arrow {
-    transform: translateX(4px);
-  }
-
-  /* Large Logo Row */
+  /* Large Logo */
   .footer__logo-row {
-    margin: 0;
     padding-block: var(--space-xl);
   }
 
   .footer__logo {
+    display: block;
     width: 100%;
-    max-width: 100%;
     height: auto;
+    opacity: 0.15;
     filter: brightness(0) invert(1);
-    opacity: 0.95;
+    user-select: none;
   }
 
   /* Bottom Row */

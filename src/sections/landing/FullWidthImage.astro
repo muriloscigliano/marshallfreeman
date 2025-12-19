@@ -1,0 +1,68 @@
+---
+// Full-width image section
+---
+
+<section class="full-width-image" aria-label="Decorative image">
+  <div class="full-width-image__container">
+    <div class="full-width-image__placeholder">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .full-width-image {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .full-width-image__container {
+    width: 100%;
+  }
+
+  .full-width-image__placeholder {
+    width: 100%;
+    height: 400px;
+    background: #d6d5d5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .full-width-image__placeholder {
+      height: 500px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .full-width-image__placeholder {
+      height: 950px;
+    }
+  }
+
+  /* When you have a real image, use this class instead */
+  .full-width-image__img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .full-width-image__img {
+      height: 500px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .full-width-image__img {
+      height: 600px;
+    }
+  }
+</style>

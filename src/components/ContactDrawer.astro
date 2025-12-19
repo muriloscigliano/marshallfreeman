@@ -1,0 +1,441 @@
+---
+import { landingData } from '@data/landing';
+import Button from '@components/Button.astro';
+
+const { contactForm } = landingData;
+---
+
+<div id="contact-drawer" class="drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="drawer-headline">
+  <!-- Backdrop -->
+  <div class="drawer__backdrop" data-drawer-close></div>
+
+  <!-- Drawer Panel -->
+  <aside class="drawer__panel">
+    <div class="drawer__content">
+      <!-- Header -->
+      <header class="drawer__header">
+        <div class="drawer__header-content">
+          <h2 id="drawer-headline" class="drawer__headline">{contactForm.headline} <span class="drawer__headline-muted">{contactForm.headlineMuted}</span></h2>
+          <p class="drawer__description">
+            {contactForm.description}{' '}
+            <a href={`tel:${contactForm.phone.replace(/\s/g, '')}`} class="drawer__phone">{contactForm.phone}</a>{' '}
+            {contactForm.descriptionContinued}{' '}
+            <strong class="drawer__emphasis">{contactForm.emphasis}</strong>{' '}
+            {contactForm.descriptionEnd}
+          </p>
+        </div>
+        <button class="drawer__close" data-drawer-close aria-label="Close contact form">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Form -->
+      <form class="drawer__form" action="#" method="POST" aria-label="Contact form">
+        <!-- Company Type Radio Buttons -->
+        <fieldset class="drawer__fieldset">
+          <legend class="drawer__legend">{contactForm.companyType.label}</legend>
+          <div class="drawer__radio-group" role="radiogroup">
+            {contactForm.companyType.options.map((option, index) => (
+              <label class="drawer__radio-label">
+                <input
+                  type="radio"
+                  name="companyType"
+                  value={option.value}
+                  class="drawer__radio"
+                  checked={index === 0}
+                  required
+                />
+                <span class="drawer__radio-custom" aria-hidden="true"></span>
+                <span class="drawer__radio-text">{option.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <!-- Form Fields -->
+        <div class="drawer__fields">
+          {contactForm.fields.map((field) => (
+            <div class="drawer__field">
+              <label for={`drawer-${field.name}`} class="drawer__label">{field.label}</label>
+              <input
+                type={field.type}
+                id={`drawer-${field.name}`}
+                name={field.name}
+                class="drawer__input"
+                required={field.required}
+                autocomplete={
+                  field.name === 'email' ? 'email' :
+                  field.name === 'phone' ? 'tel' :
+                  field.name === 'contactName' ? 'name' :
+                  field.name === 'businessName' ? 'organization' : 'off'
+                }
+              />
+            </div>
+          ))}
+        </div>
+
+        <!-- Submit Button -->
+        <footer class="drawer__footer">
+          <Button label={contactForm.submit.label} type="submit" variant="primary" />
+          <p class="drawer__disclaimer">{contactForm.disclaimer}</p>
+        </footer>
+      </form>
+    </div>
+  </aside>
+</div>
+
+<style>
+  .drawer {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    pointer-events: none;
+    visibility: hidden;
+    transition: visibility 0s 0.4s;
+  }
+
+  .drawer[aria-hidden="false"] {
+    pointer-events: auto;
+    visibility: visible;
+    transition: visibility 0s 0s;
+  }
+
+  /* Backdrop */
+  .drawer__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .drawer[aria-hidden="false"] .drawer__backdrop {
+    opacity: 1;
+  }
+
+  /* Panel */
+  .drawer__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 540px;
+    background: var(--color-blue-900);
+    color: var(--color-background);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .drawer[aria-hidden="false"] .drawer__panel {
+    transform: translateX(0);
+  }
+
+  .drawer__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    padding: var(--space-lg);
+    min-height: 100%;
+  }
+
+
+  /* Header */
+  .drawer__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  .drawer__header-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .drawer__headline {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--color-background);
+  }
+
+  .drawer__headline-muted {
+    color: rgba(254, 255, 243, 0.4);
+  }
+
+  .drawer__description {
+    font-size: var(--text-base);
+    color: rgba(254, 255, 243, 0.8);
+    line-height: 1.6;
+  }
+
+  .drawer__phone {
+    color: var(--color-background);
+    font-weight: var(--font-weight-medium);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .drawer__phone:hover {
+    opacity: 0.7;
+  }
+
+  .drawer__emphasis {
+    color: var(--color-yellow-900);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .drawer__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(254, 255, 243, 0.1);
+    color: var(--color-background);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .drawer__close:hover {
+    background: rgba(254, 255, 243, 0.2);
+  }
+
+  /* Form */
+  .drawer__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    flex: 1;
+  }
+
+  /* Fieldset */
+  .drawer__fieldset {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .drawer__legend {
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(254, 255, 243, 0.5);
+  }
+
+  .drawer__radio-group {
+    display: flex;
+    gap: var(--space-xl);
+  }
+
+  .drawer__radio-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+  }
+
+  .drawer__radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .drawer__radio-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(254, 255, 243, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .drawer__radio-custom::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: var(--color-background);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .drawer__radio:checked + .drawer__radio-custom {
+    border-color: var(--color-background);
+  }
+
+  .drawer__radio:checked + .drawer__radio-custom::after {
+    transform: scale(1);
+  }
+
+  .drawer__radio:focus-visible + .drawer__radio-custom {
+    outline: 2px solid var(--color-background);
+    outline-offset: 2px;
+  }
+
+  .drawer__radio-text {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-background);
+  }
+
+  /* Fields */
+  .drawer__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .drawer__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .drawer__label {
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(254, 255, 243, 0.5);
+  }
+
+  .drawer__input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(254, 255, 243, 0.3);
+    padding-block: var(--space-sm);
+    font-size: var(--text-base);
+    color: var(--color-background);
+    transition: border-color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .drawer__input::placeholder {
+    color: rgba(254, 255, 243, 0.3);
+  }
+
+  .drawer__input:focus {
+    outline: none;
+    border-color: var(--color-background);
+  }
+
+  /* Footer */
+  .drawer__footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-top: auto;
+  }
+
+  .drawer__disclaimer {
+    font-size: var(--text-sm);
+    color: rgba(254, 255, 243, 0.5);
+  }
+</style>
+
+<script>
+  function initContactDrawer() {
+    const drawer = document.getElementById('contact-drawer');
+    if (!drawer) return;
+
+    const panel = drawer.querySelector('.drawer__panel');
+    const closeButtons = drawer.querySelectorAll('[data-drawer-close]');
+    const openTriggers = document.querySelectorAll('[data-drawer-open="contact"]');
+
+    let previousActiveElement: HTMLElement | null = null;
+
+    function openDrawer() {
+      previousActiveElement = document.activeElement as HTMLElement;
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      // Focus first input after animation
+      setTimeout(() => {
+        const firstInput = panel?.querySelector('input') as HTMLInputElement;
+        firstInput?.focus();
+      }, 100);
+    }
+
+    function closeDrawer() {
+      drawer.setAttribute('aria-hidden', 'true');
+      previousActiveElement?.focus();
+
+      // Wait for animation to complete before resetting overflow
+      setTimeout(() => {
+        if (drawer?.getAttribute('aria-hidden') === 'true') {
+          document.body.style.overflow = '';
+        }
+      }, 400);
+    }
+
+    // Open triggers
+    openTriggers.forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        openDrawer();
+      });
+    });
+
+    // Close triggers
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', closeDrawer);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') {
+        closeDrawer();
+      }
+    });
+
+    // Focus trap
+    drawer.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || drawer.getAttribute('aria-hidden') === 'true') return;
+
+      const focusableElements = panel?.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      ) as NodeListOf<HTMLElement>;
+
+      if (!focusableElements || focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    });
+  }
+
+  // Initialize on DOM ready and after navigation
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactDrawer);
+  } else {
+    initContactDrawer();
+  }
+
+  // Re-init on Astro page transitions
+  document.addEventListener('astro:page-load', initContactDrawer);
+</script>

@@ -61,3 +61,27 @@ const imageURL = new URL(image, siteConfig.url).href;
 <!-- Additional SEO -->
 <meta name="theme-color" content="#02539C" />
 <meta name="msapplication-TileColor" content="#02539C" />
+
+<!-- JSON-LD Structured Data -->
+<script is:inline type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": siteConfig.name,
+  "description": description,
+  "url": siteConfig.url,
+  "logo": `${siteConfig.url}/images/marshall-freeman-logo.svg`,
+  "image": imageURL,
+  "telephone": siteConfig.contactAU.phone,
+  "email": siteConfig.contactAU.email,
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "AU"
+  },
+  "areaServed": [
+    { "@type": "Country", "name": "Australia" },
+    { "@type": "Country", "name": "New Zealand" }
+  ],
+  "priceRange": "$$",
+  "serviceType": "Debt Collection Agency",
+  "sameAs": []
+})} />

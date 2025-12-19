@@ -212,7 +212,7 @@ const { hero, trustSignals } = landingData;
   .hero__signals-wrap {
     width: calc(100% + var(--container-padding) * 2);
     max-width: min(1500px, 100vw - var(--space-lg) * 2);
-    margin-inline: calc(var(--container-padding) * -1);
+    /* margin-inline: calc(var(--container-padding) * -1); */
   }
 
   @media (min-width: 1440px) {
@@ -265,9 +265,10 @@ const { hero, trustSignals } = landingData;
   }
 
   .hero__signal-text {
-    font-size: var(--text-sm);
+    font-size: var(--text-mm);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
     line-height: 1.4;
+    text-wrap: balance;
   }
 </style>

@@ -6,27 +6,39 @@ const { whyUs } = landingData;
 
 <section id={whyUs.id} class="why-us" aria-labelledby="why-us-headline">
   <div class="why-us__container container">
-    <div class="why-us__main">
-      <header class="why-us__header">
-        <h2 id="why-us-headline" class="why-us__headline">{whyUs.headline} <span class="why-us__headline-muted">{whyUs.headlineMuted}</span></h2>
-      </header>
+    <div class="why-us__layout">
+      <!-- Image placeholder on left -->
+      <div class="why-us__image" aria-hidden="true">
+        <div class="why-us__image-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+      </div>
 
-      <ul class="why-us__benefits" role="list" aria-label="Key benefits">
-        {whyUs.benefits.map((benefit, index) => (
-          <li class="why-us__benefit">
-            <span class="why-us__benefit-number" aria-hidden="true">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-            <span class="why-us__benefit-text">{benefit}</span>
-          </li>
-        ))}
-      </ul>
+      <!-- Content on right -->
+      <div class="why-us__content">
+        <header class="why-us__header">
+          <p class="why-us__tagline">{whyUs.tagline}</p>
+          <h2 id="why-us-headline" class="why-us__headline">{whyUs.headline} <span class="why-us__headline-muted">{whyUs.headlineMuted}</span></h2>
+        </header>
+
+        <ul class="why-us__benefits" role="list" aria-label="Key benefits">
+          {whyUs.benefits.map((benefit, index) => (
+            <li class="why-us__benefit">
+              <span class="why-us__benefit-number" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span class="why-us__benefit-text">{benefit}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="why-us__statement">{whyUs.statement}</p>
+      </div>
     </div>
-
-    <footer class="why-us__footer">
-      <p class="why-us__statement">{whyUs.statement}</p>
-      <p class="why-us__tagline">{whyUs.tagline}</p>
-    </footer>
   </div>
 </section>
 
@@ -39,31 +51,78 @@ const { whyUs } = landingData;
   .why-us__container {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3xl);
   }
 
-  .why-us__main {
+  .why-us__layout {
     display: flex;
     flex-direction: column;
     gap: var(--space-2xl);
   }
 
   @media (min-width: 1024px) {
-    .why-us__main {
+    .why-us__layout {
       flex-direction: row;
       gap: var(--space-3xl);
-      align-items: flex-start;
+      align-items: stretch;
+    }
+  }
+
+  /* Image placeholder */
+  .why-us__image {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .why-us__image {
+      display: flex;
+      flex: 1;
+    }
+  }
+
+  .why-us__image-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    background: var(--color-foreground);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+  }
+
+  /* Content */
+  .why-us__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 1024px) {
+    .why-us__content {
+      flex: 1;
     }
   }
 
   .why-us__header {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .why-us__tagline {
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-subtle);
   }
 
   .why-us__headline {
     font-size: var(--text-4xl);
     font-weight: var(--font-weight-medium);
     letter-spacing: -0.03em;
+    line-height: 1.1;
   }
 
   .why-us__headline-muted {
@@ -73,7 +132,6 @@ const { whyUs } = landingData;
   .why-us__benefits {
     display: flex;
     flex-direction: column;
-    flex: 1;
   }
 
   .why-us__benefit {
@@ -107,33 +165,10 @@ const { whyUs } = landingData;
     line-height: 1.5;
   }
 
-  .why-us__footer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
-    padding-top: var(--space-2xl);
-    border-top: 1px solid var(--color-border);
-  }
-
-  @media (min-width: 768px) {
-    .why-us__footer {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      gap: var(--space-xl);
-    }
-  }
-
   .why-us__statement {
-    font-size: var(--text-2xl);
+    font-size: var(--text-lg);
     font-weight: var(--font-weight-medium);
-    color: var(--color-text);
-    max-width: 40ch;
+    color: var(--color-text-muted);
   }
 
-  .why-us__tagline {
-    font-size: var(--text-sm);
-    color: var(--color-text-subtle);
-    max-width: none;
-  }
 </style>

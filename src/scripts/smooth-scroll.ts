@@ -531,6 +531,24 @@ function initAnimations() {
     );
   }
 
+  // Why Us image - clip-path reveal from top to bottom
+  const whyUsImage = document.querySelector('.why-us__image-placeholder');
+  if (whyUsImage) {
+    gsap.fromTo(whyUsImage,
+      { clipPath: 'inset(0 0 100% 0)' },
+      {
+        clipPath: 'inset(0 0 0% 0)',
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: whyUsImage,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+  }
+
   // Portal preview - scale in
   const portalPreview = document.querySelector('.portal__preview');
   if (portalPreview) {
@@ -684,7 +702,16 @@ function initAnimations() {
 // Run animations after DOM is loaded AND fonts are ready
 function startAnimations() {
   document.fonts.ready.then(() => {
-    initAnimations();
+    // Check if intro has already played (session storage set by IntroOverlay)
+    if (sessionStorage.getItem('introPlayed')) {
+      // Intro already played, start animations immediately
+      initAnimations();
+    } else {
+      // Wait for intro to complete before starting animations
+      window.addEventListener('introComplete', () => {
+        initAnimations();
+      }, { once: true });
+    }
   });
 }
 
