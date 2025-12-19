@@ -36,6 +36,21 @@ export const landingData = {
     },
   ],
 
+  // Client Logos Marquee
+  clientLogos: {
+    label: 'Trusted by Australian businesses',
+    logos: [
+      { name: 'Bunnings Trade', alt: 'Bunnings Trade logo' },
+      { name: 'Reece Group', alt: 'Reece Group logo' },
+      { name: 'Kennards Hire', alt: 'Kennards Hire logo' },
+      { name: 'Coates Hire', alt: 'Coates Hire logo' },
+      { name: 'Beaumont Tiles', alt: 'Beaumont Tiles logo' },
+      { name: 'Total Tools', alt: 'Total Tools logo' },
+      { name: 'Tradelink', alt: 'Tradelink logo' },
+      { name: 'Bowens', alt: 'Bowens logo' },
+    ],
+  },
+
   // How It Works Section
   howItWorks: {
     id: 'how-it-works',
@@ -87,37 +102,31 @@ export const landingData = {
     statement: 'This is debt recovery designed for modern businesses.',
   },
 
-  // Portal Section
-  portal: {
-    id: 'portal',
-    tagline: 'The Online Portal',
-    headline: 'Your debt management',
-    headlineMuted: 'dashboard.',
-    description: 'Submit jobs, monitor progress, and stay in control — all in one place.',
+  // Dashboard Section
+  dashboard: {
+    id: 'dashboard',
+    tagline: 'The Platform',
+    headline: 'Your money back,',
+    headlineMuted: 'without the hassle.',
+    description: 'Submit a case in minutes and watch your debts get recovered. <strong>Real-time tracking, automated updates, and clear reporting</strong> — so you can focus on running your business.',
     features: [
       {
-        number: '01',
-        title: 'Fast job submission',
-        description: 'Add debtor details quickly through our secure, intuitive interface.',
+        title: 'Submit cases',
+        description: 'Add debtor details quickly through our secure, intuitive interface with guided workflows.',
       },
       {
-        number: '02',
-        title: 'Real-time case tracking',
-        description: 'Monitor every case with live status updates and progress indicators.',
+        title: 'Track progress',
+        description: 'Monitor every case with live status updates, communication history, and progress indicators.',
       },
       {
-        number: '03',
-        title: 'Communication history',
-        description: 'Full visibility of all debtor correspondence and notes in one place.',
+        title: 'Manage payments',
+        description: 'View payment plans, track installments, and receive automated notifications.',
       },
       {
-        number: '04',
-        title: 'Secure document storage',
-        description: 'Upload and access invoices, contracts, and supporting documents securely.',
+        title: 'Generate reports',
+        description: 'Export detailed reports for stakeholders with complete audit trails and analytics.',
       },
     ],
-    closing: 'Everything you need, without uncertainty or guesswork.',
-    tagline2: 'Plus payment plan monitoring, automated reminders, and clear reporting.',
   },
 
   // Platform Features Section

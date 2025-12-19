@@ -1,0 +1,503 @@
+---
+import { landingData } from '@data/landing';
+
+const { dashboard } = landingData;
+---
+
+<section id={dashboard.id} class="dashboard" aria-labelledby="dashboard-headline">
+  <div class="dashboard__container container">
+    <header class="dashboard__header" data-dashboard-header>
+      <div class="dashboard__header-left">
+        <p class="dashboard__tagline" data-dashboard-tagline>{dashboard.tagline}</p>
+        <h2 id="dashboard-headline" class="dashboard__headline" data-dashboard-headline>{dashboard.headline} <span class="dashboard__headline-muted">{dashboard.headlineMuted}</span></h2>
+      </div>
+      <div class="dashboard__header-right">
+        <p class="dashboard__description" data-dashboard-description set:html={dashboard.description} />
+      </div>
+    </header>
+
+    <div class="dashboard__content">
+      <div class="dashboard__sidebar" data-dashboard-sidebar>
+        <nav class="dashboard__nav" aria-label="Dashboard features">
+          <ul class="dashboard__nav-list" role="list">
+            {dashboard.features.map((feature, index) => (
+              <li
+                class="dashboard__nav-item"
+                data-dashboard-nav
+                data-index={index}
+              >
+                <button class="dashboard__nav-button" type="button">
+                  <span class="dashboard__nav-title">{feature.title}</span>
+                  <p class="dashboard__nav-description">{feature.description}</p>
+                </button>
+                <div class="dashboard__nav-progress">
+                  <div class="dashboard__nav-progress-bar" data-progress-bar></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="dashboard__visual" data-dashboard-visual>
+        <div class="dashboard__image-wrapper" data-dashboard-wrapper>
+          <div class="dashboard__image-bg" data-parallax-bg></div>
+          {dashboard.features.map((feature, index) => {
+            const images = [
+              '/images/marshall-freeman-portal-lodge-cut.jpg',
+              '/images/marshall-freeman-portal-lodge-cut.jpg',
+              '/images/marshall-freeman-portal-debt-list-cropped.jpg',
+              '/images/marshall-freeman-portal-lodge-cut.jpg',
+            ];
+            return (
+              <div class="dashboard__image-slide" data-slide={index}>
+                <div class="dashboard__image-slide-inner">
+                  <img
+                    src={images[index]}
+                    alt={feature.title}
+                    class="dashboard__slide-image"
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dashboard {
+    padding-block: var(--space-section);
+  }
+
+  .dashboard__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  /* Header */
+  .dashboard__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 1024px) {
+    .dashboard__header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-3xl);
+    }
+  }
+
+  .dashboard__header-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .dashboard__tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+
+  .dashboard__tagline::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+  }
+
+  .dashboard__headline {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--color-text);
+  }
+
+  .dashboard__headline-muted {
+    color: var(--color-text-muted);
+  }
+
+  .dashboard__header-right {
+    max-width: 400px;
+  }
+
+  @media (min-width: 1024px) {
+    .dashboard__header-right {
+      padding-bottom: var(--space-sm);
+    }
+  }
+
+  .dashboard__description {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .dashboard__description :global(strong) {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+  }
+
+  @media (max-width: 1023px) {
+    .dashboard__description {
+      text-align: left;
+    }
+  }
+
+  /* Content */
+  .dashboard__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  /* Navigation - horizontal on top */
+  .dashboard__sidebar {
+    width: 100%;
+  }
+
+  .dashboard__nav {
+    width: 100%;
+  }
+
+  .dashboard__nav-list {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .dashboard__nav-item {
+    flex: 1;
+    position: relative;
+    border-top: 1px solid var(--color-border);
+    /* border-bottom: 1px solid var(--color-border); */
+    min-height: 80px;
+  }
+
+  .dashboard__nav-item:last-child {
+    border-right: none;
+  }
+
+  .dashboard__nav-button {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    width: 100%;
+    padding: var(--space-lg);
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--duration-base) var(--ease-out-expo);
+  }
+
+  .dashboard__nav-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-subtle);
+    transition: color var(--duration-base) var(--ease-out-expo);
+  }
+
+  .dashboard__nav-description {
+    display: none;
+  }
+
+  /* Progress bar */
+  .dashboard__nav-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-border);
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out-expo);
+  }
+
+  .dashboard__nav-progress-bar {
+    height: 100%;
+    width: 0;
+    background: var(--color-accent);
+    transition: none;
+  }
+
+  .dashboard__nav-item.is-active .dashboard__nav-progress {
+    opacity: 1;
+  }
+
+  .dashboard__nav-item.is-active .dashboard__nav-progress-bar {
+    width: 0;
+  }
+
+  /* Active state */
+  .dashboard__nav-item.is-active .dashboard__nav-title {
+    color: var(--color-text);
+  }
+
+  /* Hover state */
+  .dashboard__nav-item:hover .dashboard__nav-title {
+    color: var(--color-text-muted);
+  }
+
+  .dashboard__nav-item.is-active:hover .dashboard__nav-title {
+    color: var(--color-text);
+  }
+
+  /* Visual - breaks out of container */
+  .dashboard__visual {
+    width: calc(100% + var(--container-padding) * 2);
+    margin-inline: calc(var(--container-padding) * -1);
+  }
+
+  @media (min-width: 1440px) {
+    .dashboard__visual {
+      width: 100vw;
+      margin-left: calc((100% - 100vw) / 2);
+    }
+  }
+
+  .dashboard__image-wrapper {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    clip-path: inset(100% 0 0 0);
+    max-width: 1400px;
+    margin-inline: auto;
+  }
+
+  .dashboard__image-bg {
+    position: absolute;
+    inset: -20%;
+    width: 140%;
+    height: 140%;
+    background: url('/images/portal-bg.jpg') center center / cover no-repeat;
+    will-change: transform;
+  }
+
+  .dashboard__image-slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .dashboard__image-slide-inner {
+    padding: 12px;
+    background: rgb(255, 255, 255, 0.2);
+    border-radius: 48px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0px 10px 10px rgb(3, 83, 156, 0.15);
+    opacity: 0;
+    will-change: opacity;
+    margin-bottom: -40px;
+  }
+
+  .dashboard__slide-image {
+    border-radius: 36px;
+    display: block;
+  }
+
+  /* Nav items initial state for stagger animation */
+  .dashboard__nav-item {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Header elements initial state */
+  .dashboard__tagline {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .dashboard__headline,
+  .dashboard__description {
+    visibility: hidden;
+  }
+
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, animateSplitLines } from '@scripts/animations';
+
+  function initParallax() {
+    const bg = document.querySelector('[data-parallax-bg]') as HTMLElement;
+    const wrapper = document.querySelector('.dashboard__image-wrapper') as HTMLElement;
+    if (!bg || !wrapper) return;
+
+    gsap.to(bg, {
+      yPercent: 20,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wrapper,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      }
+    });
+  }
+
+  function initRevealAnimations() {
+    const section = document.querySelector('.dashboard') as HTMLElement;
+    const headline = document.querySelector('[data-dashboard-headline]') as HTMLElement;
+    const tagline = document.querySelector('[data-dashboard-tagline]') as HTMLElement;
+    const description = document.querySelector('[data-dashboard-description]') as HTMLElement;
+    const navItems = document.querySelectorAll('[data-dashboard-nav]');
+    const wrapper = document.querySelector('[data-dashboard-wrapper]') as HTMLElement;
+    const firstSlideInner = document.querySelector('[data-slide="0"] .dashboard__image-slide-inner') as HTMLElement;
+
+    if (!headline || !section) return;
+
+    // SplitText for headline - type lines with scroll trigger
+    animateSplitLines(headline, {
+      type: 'lines',
+      start: 'top 85%',
+    });
+
+    // SplitText for description
+    if (description) {
+      animateSplitLines(description, {
+        type: 'lines',
+        start: 'top 85%',
+      });
+    }
+
+    // Other elements timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 80%',
+        once: true,
+      }
+    });
+
+    // Tagline fade in
+    tl.to(tagline, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power3.out',
+    });
+
+    // Nav items stagger reveal
+    tl.to(navItems, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.1,
+      duration: 0.6,
+      ease: 'power3.out',
+    }, 0.3);
+
+    // Wrapper clip-path reveal from bottom
+    tl.to(wrapper, {
+      clipPath: 'inset(0% 0 0 0)',
+      duration: 1,
+      ease: 'power3.inOut',
+    }, 0.5);
+
+    // First slide entrance - fade in
+    tl.to(firstSlideInner, {
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+    }, 0.8);
+  }
+
+  function initDashboard() {
+    const navItems = document.querySelectorAll('[data-dashboard-nav]');
+    const slideInners = document.querySelectorAll('.dashboard__image-slide-inner') as NodeListOf<HTMLElement>;
+    if (!navItems.length || !slideInners.length) return;
+
+    let currentIndex = 0;
+    let progressTween: gsap.core.Tween | null = null;
+    const DURATION = 5;
+
+    function showSlide(index: number, fromIndex: number = -1) {
+      // Update nav items
+      navItems.forEach((nav, i) => {
+        nav.classList.toggle('is-active', i === index);
+        const progressBar = nav.querySelector('[data-progress-bar]') as HTMLElement;
+        if (progressBar) gsap.set(progressBar, { width: '0%' });
+      });
+
+      // Simple opacity crossfade
+      slideInners.forEach((slide, i) => {
+        if (i === index) {
+          gsap.to(slide, { opacity: 1, duration: 0.5, ease: 'power2.out' });
+        } else if (i === fromIndex) {
+          gsap.to(slide, { opacity: 0, duration: 0.5, ease: 'power2.out' });
+        }
+      });
+
+      // Start progress bar
+      if (progressTween) progressTween.kill();
+      const progressBar = navItems[index]?.querySelector('[data-progress-bar]') as HTMLElement;
+      if (progressBar) {
+        progressTween = gsap.to(progressBar, {
+          width: '100%',
+          duration: DURATION,
+          ease: 'none',
+          onComplete: () => {
+            const nextIndex = (currentIndex + 1) % navItems.length;
+            const prevIndex = currentIndex;
+            currentIndex = nextIndex;
+            showSlide(nextIndex, prevIndex);
+          }
+        });
+      }
+    }
+
+    // Click handlers
+    navItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        if (index !== currentIndex) {
+          const prevIndex = currentIndex;
+          currentIndex = index;
+          showSlide(index, prevIndex);
+        }
+      });
+    });
+
+    // Start autoplay after reveal completes
+    const section = document.querySelector('.dashboard') as HTMLElement;
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 70%',
+      once: true,
+      onEnter: () => {
+        setTimeout(() => {
+          showSlide(0);
+        }, 2500);
+      }
+    });
+  }
+
+  function init() {
+    initRevealAnimations();
+    initDashboard();
+    initParallax();
+  }
+
+  if (sessionStorage.getItem('introPlayed')) {
+    init();
+  } else {
+    window.addEventListener('introComplete', init, { once: true });
+  }
+</script>

@@ -1,9 +1,9 @@
 ---
-// Full-width image section
+// Full-width image section with scale reveal animation
 ---
 
-<section class="full-width-image" aria-label="Decorative image">
-  <div class="full-width-image__container">
+<section class="full-width-image" data-full-width-image aria-label="Decorative image">
+  <div class="full-width-image__inner" data-full-width-inner>
     <div class="full-width-image__placeholder">
       <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -17,52 +17,78 @@
 <style>
   .full-width-image {
     width: 100%;
+    overflow: visible;
+    background: var(--color-foreground);
+  }
+
+  .full-width-image__inner {
+    width: min(1380px, 90%);
+    min-height: 950px;
+    margin-inline: auto;
+    border-radius: var(--radius-lg);
     overflow: hidden;
+    will-change: width, min-height, border-radius;
   }
 
-  .full-width-image__container {
+  .full-width-image__placeholder,
+  .full-width-image__img {
     width: 100%;
-  }
-
-  .full-width-image__placeholder {
-    width: 100%;
-    height: 400px;
-    background: #d6d5d5;
+    height: 100%;
+    min-height: inherit;
+    background: #d8dadb;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--color-text-muted);
-  }
-
-  @media (min-width: 768px) {
-    .full-width-image__placeholder {
-      height: 500px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .full-width-image__placeholder {
-      height: 950px;
-    }
-  }
-
-  /* When you have a real image, use this class instead */
-  .full-width-image__img {
-    width: 100%;
-    height: 400px;
     object-fit: cover;
-    display: block;
-  }
-
-  @media (min-width: 768px) {
-    .full-width-image__img {
-      height: 500px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .full-width-image__img {
-      height: 600px;
-    }
   }
 </style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initFullWidthReveal() {
+    const section = document.querySelector('[data-full-width-image]');
+    const inner = document.querySelector('[data-full-width-inner]');
+
+    if (!section || !inner) return;
+
+    // Calculate proportional height based on viewport
+    const vw = window.innerWidth;
+    const initialWidth = Math.min(1380, vw * 0.9);
+    const initialHeight = 950;
+    const fullHeight = Math.round((vw / initialWidth) * initialHeight);
+
+    // Set initial state - 1380px width, 950px height
+    gsap.set(inner, {
+      width: initialWidth,
+      minHeight: initialHeight,
+      borderRadius: '16px'
+    });
+
+    // Expand to full viewport width with proportional height (once only)
+    gsap.to(inner, {
+      width: vw,
+      minHeight: fullHeight,
+      borderRadius: '0px',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 60%',
+        end: 'top 10%',
+        scrub: 0.5,
+        once: true,
+      }
+    });
+  }
+
+  // Wait for intro to complete
+  if (sessionStorage.getItem('introPlayed')) {
+    initFullWidthReveal();
+  } else {
+    window.addEventListener('introComplete', initFullWidthReveal, { once: true });
+  }
+</script>
