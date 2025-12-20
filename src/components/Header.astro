@@ -2,6 +2,11 @@
 import { siteConfig } from '@data/site';
 import Button from '@components/Button.astro';
 
+interface Props {
+  hideNav?: boolean;
+}
+
+const { hideNav = false } = Astro.props;
 const { navigation, name, cta } = siteConfig;
 ---
 
@@ -17,66 +22,74 @@ const { navigation, name, cta } = siteConfig;
 
     <!-- Desktop Navigation -->
     <div class="header__desktop">
-      <ul class="header__menu">
-        {navigation.map((item, index) => (
-          <li data-header-reveal data-header-delay={index}>
-            <a href={item.href} class="header__link">
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
+      {!hideNav && (
+        <ul class="header__menu">
+          {navigation.map((item, index) => (
+            <li data-header-reveal data-header-delay={index}>
+              <a href={item.href} class="header__link">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div class="header__actions">
-        <a href={cta.login.href} class="header__login" data-header-reveal data-header-delay="4">
-          {cta.login.label}
-        </a>
-        <div data-header-reveal data-header-delay="5">
+        {!hideNav && (
+          <a href={cta.login.href} class="header__login" data-header-reveal data-header-delay={hideNav ? "0" : "4"}>
+            {cta.login.label}
+          </a>
+        )}
+        <div data-header-reveal data-header-delay={hideNav ? "1" : "5"}>
           <Button href={cta.primary.href} label={cta.primary.label} variant="secondary" size="small" />
         </div>
       </div>
     </div>
 
     <!-- Mobile Menu Toggle -->
-    <button
-      class="header__toggle"
-      type="button"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      data-header-reveal
-      data-header-delay="1"
-    >
-      <span class="header__toggle-line"></span>
-      <span class="header__toggle-line"></span>
-    </button>
+    {!hideNav && (
+      <button
+        class="header__toggle"
+        type="button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-header-reveal
+        data-header-delay="1"
+      >
+        <span class="header__toggle-line"></span>
+        <span class="header__toggle-line"></span>
+      </button>
+    )}
   </nav>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="header__mobile" aria-hidden="true">
-    <div class="header__mobile-backdrop" data-mobile-close></div>
-    <div class="header__mobile-panel" role="dialog" aria-modal="true" aria-label="Mobile menu">
-      <nav class="header__mobile-nav container">
-        <ul class="header__mobile-list">
-          {navigation.map((item) => (
-            <li>
-              <a href={item.href} class="header__mobile-link" data-mobile-link>
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div class="header__mobile-footer">
-          <a href={cta.login.href} class="header__mobile-login" data-mobile-link>
-            {cta.login.label}
-          </a>
-          <div class="header__mobile-cta" data-mobile-link>
-            <Button href={cta.primary.href} label={cta.primary.label} variant="secondary" size="small" />
+  {!hideNav && (
+    <div id="mobile-menu" class="header__mobile" aria-hidden="true">
+      <div class="header__mobile-backdrop" data-mobile-close></div>
+      <div class="header__mobile-panel" role="dialog" aria-modal="true" aria-label="Mobile menu">
+        <nav class="header__mobile-nav container">
+          <ul class="header__mobile-list">
+            {navigation.map((item) => (
+              <li>
+                <a href={item.href} class="header__mobile-link" data-mobile-link>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="header__mobile-footer">
+            <a href={cta.login.href} class="header__mobile-login" data-mobile-link>
+              {cta.login.label}
+            </a>
+            <div class="header__mobile-cta" data-mobile-link>
+              <Button href={cta.primary.href} label={cta.primary.label} variant="secondary" size="small" />
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </div>
-  </div>
+  )}
 </header>
 
 <style>
