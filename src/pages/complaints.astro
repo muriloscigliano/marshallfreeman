@@ -12,15 +12,15 @@ const pageDescription = 'Submit a complaint about our debt collection services. 
       <div class="complaints__layout">
         <!-- Left Column: Header -->
         <header class="complaints__header">
-          <p class="complaints__tagline">Complaints</p>
-          <h1 class="complaints__headline">Submit a Complaint</h1>
-          <p class="complaints__intro">
+          <p class="complaints__tagline" data-reveal>Complaints</p>
+          <h1 class="complaints__headline" data-reveal>Submit a Complaint</h1>
+          <p class="complaints__intro" data-reveal>
             We are committed to treating all individuals with professionalism, respect, and in accordance with all applicable laws and regulatory guidelines.
           </p>
-          <p class="complaints__intro">
+          <p class="complaints__intro" data-reveal>
             If you believe that our conduct has been unprofessional or may have breached your statutory rights under consumer protection or debt collection laws, we encourage you to let us know.
           </p>
-          <div class="complaints__note">
+          <div class="complaints__note" data-reveal>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             </svg>
@@ -31,7 +31,7 @@ const pageDescription = 'Submit a complaint about our debt collection services. 
         <!-- Right Column: Form -->
         <form class="complaints__form" action="#" method="POST" aria-label="Complaint form">
           <!-- Your Details -->
-          <div class="complaints__card">
+          <div class="complaints__card" data-reveal>
             <h2 class="complaints__card-title">Your Details</h2>
 
             <div class="complaints__grid">
@@ -117,7 +117,7 @@ const pageDescription = 'Submit a complaint about our debt collection services. 
           </div>
 
           <!-- Complaint Details -->
-          <div class="complaints__card">
+          <div class="complaints__card" data-reveal>
             <h2 class="complaints__card-title">Complaint Details</h2>
 
             <div class="complaints__grid">
@@ -168,7 +168,7 @@ const pageDescription = 'Submit a complaint about our debt collection services. 
           </div>
 
           <!-- Declaration & Submit -->
-          <div class="complaints__footer">
+          <div class="complaints__footer" data-reveal>
             <label class="complaints__checkbox-label">
               <input type="checkbox" name="declaration" class="complaints__checkbox" required />
               <span class="complaints__checkbox-box">
@@ -496,4 +496,30 @@ const pageDescription = 'Submit a complaint about our debt collection services. 
     font-size: var(--text-sm);
     color: var(--color-text-muted);
   }
+
+  /* Reveal animation initial state */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 </style>
+
+<script>
+  import gsap from 'gsap';
+
+  function initRevealAnimations() {
+    const revealElements = document.querySelectorAll('[data-reveal]');
+    if (!revealElements.length) return;
+
+    gsap.to(revealElements, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out',
+    });
+  }
+
+  // Wait for intro overlay transition to complete
+  window.addEventListener('introComplete', initRevealAnimations);
+</script>
