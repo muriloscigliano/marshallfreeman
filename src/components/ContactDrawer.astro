@@ -367,11 +367,6 @@ const { contactForm } = landingData;
       drawer.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
 
-      // Stop Lenis smooth scroll
-      if ((window as any).lenis) {
-        (window as any).lenis.stop();
-      }
-
       // Focus first input after animation
       setTimeout(() => {
         const firstInput = panel?.querySelector('input') as HTMLInputElement;
@@ -383,14 +378,10 @@ const { contactForm } = landingData;
       drawer.setAttribute('aria-hidden', 'true');
       previousActiveElement?.focus();
 
-      // Wait for animation to complete before resetting
+      // Wait for animation to complete before resetting overflow
       setTimeout(() => {
         if (drawer?.getAttribute('aria-hidden') === 'true') {
           document.body.style.overflow = '';
-          // Resume Lenis smooth scroll
-          if ((window as any).lenis) {
-            (window as any).lenis.start();
-          }
         }
       }, 400);
     }
